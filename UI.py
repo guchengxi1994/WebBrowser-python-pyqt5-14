@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-16 17:07:37
+@LastEditTime: 2020-04-16 17:16:28
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import *
@@ -19,8 +19,8 @@ class UI(QMainWindow,):
     def __init__(self):
         super(UI, self).__init__()
         self.setWindowTitle('Web browser')
-        self.resize(680,480)
-        self.setWindowIcon(QtGui.QIcon('./imgs/liulanqi.png'))
+        self.resize(1280,960)
+        self.setWindowIcon(QtGui.QIcon('./static/imgs/liulanqi.png'))
         self.main_toolbar = QtWidgets.QToolBar()
         self.main_toolbar.setIconSize(QtCore.QSize(16,16))
         self.addToolBar(self.main_toolbar)
@@ -43,14 +43,14 @@ class UI(QMainWindow,):
 
 
 
-        self.turn_button = QAction(QIcon('./imgs/zhuandao.png'),'Turn',self)
-        self.back_button = QAction(QIcon('./imgs/fanhui.png'),'Back',self)
-        self.next_button = QAction(QIcon('./imgs/tiaozhuan.png'),'Forward',self)
-        self.stop_button = QAction(QIcon('./imgs/close.png'),'Stop',self)
-        self.reload_button = QAction(QIcon('./imgs/shuaxin.png'),'Reload',self)
-        self.add_button = QAction(QIcon('./imgs/add.png'),'Addpage',self)
+        self.turn_button = QAction(QIcon('./static/imgs/zhuandao.png'),'Turn',self)
+        self.back_button = QAction(QIcon('./static/imgs/fanhui.png'),'Back',self)
+        self.next_button = QAction(QIcon('./static/imgs/tiaozhuan.png'),'Forward',self)
+        self.stop_button = QAction(QIcon('./static/imgs/close.png'),'Stop',self)
+        self.reload_button = QAction(QIcon('./static/imgs/shuaxin.png'),'Reload',self)
+        self.add_button = QAction(QIcon('./static/imgs/add.png'),'Addpage',self)
 
-        self.set_default_openPage_button = QAction(QIcon('./imgs/liulanqi.png'),'SetDefault',self)
+        self.set_default_openPage_button = QAction(QIcon('./static/imgs/liulanqi.png'),'SetDefault',self)
 
 
 
