@@ -5,14 +5,15 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-16 17:35:30
+@LastEditTime: 2020-04-17 10:12:39
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
+from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox
+from PyQt5.QtGui import QIcon
 import sys,os,requests
-from PyQt5.QtWebEngineWidgets import *
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 import utils.repath as repath
+from utils.analyse import *
 
 
 BASE_DIR = os.path.abspath(os.curdir)
@@ -46,6 +47,7 @@ class UI(QMainWindow,):
         self.tabs_layout = QtWidgets.QGridLayout()
         self.tabs.setLayout(self.tabs_layout)
         self.url_edit = QtWidgets.QLineEdit()
+        self.cwd = BASE_DIR + "/LocalWebTest/static/"
 
 
         self.browser = QWebEngineView()
@@ -67,7 +69,8 @@ class UI(QMainWindow,):
         self.reload_button = QAction(QIcon(BASE_DIR + '/static/imgs/shuaxin.png'),'Reload',self)
         self.add_button = QAction(QIcon(BASE_DIR + '/static/imgs/add.png'),'Addpage',self)
 
-        self.set_default_openPage_button = QAction(QIcon(BASE_DIR + '/static/imgs/liulanqi.png'),'SetDefault',self)
+        self.set_default_openPage_button = QAction(QIcon(BASE_DIR + '/static/imgs/lock.png'),'SetDefault',self)
+        self.set_data_button = QAction(QIcon(BASE_DIR + '/static/imgs/data.png'),'AnalyzeData',self)
 
 
 
@@ -80,6 +83,8 @@ class UI(QMainWindow,):
         self.main_toolbar.addAction(self.turn_button)
 
         self.main_toolbar.addAction(self.set_default_openPage_button)
+        self.main_toolbar.addAction(self.set_data_button)
+        
 
 
 
@@ -95,8 +100,48 @@ class UI(QMainWindow,):
 
 
         self.set_default_openPage_button.triggered.connect(self.defaultPage)
+        self.set_data_button.triggered.connect(self.anaData)
 
     
+    def showOption(self):
+        pass
+
+    def anaData(self):
+        """
+        数据分析
+        """
+        fileName_choose, filetype = QFileDialog.getOpenFileName(self,  
+                                    "选取文件",  
+                                    self.cwd, # 起始路径 
+                                    "All Files (*);;Text Files (*.txt)")   # 设置文件扩展名过滤,用双分号间隔
+
+        if fileName_choose == "":
+            print("\n取消选择")
+            return
+
+        print("\n你选择的文件为:")
+        print(fileName_choose)
+        text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要分析的数据表名：')
+        
+        if ok:
+            if text != "":               
+                options = readColumn(fileName_choose,sheetName=text)
+            else:
+                QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
+                options = readColumn(fileName_choose,sheetName='Sheet1')
+                print(options)
+        
+        else:
+            QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
+            options = readColumn(fileName_choose,sheetName='Sheet1')
+            print (options)
+
+        
+        
+        # print("文件筛选器类型: ",filetype)
+
+
+
     def defaultPage(self):
         text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入默认网址：')
         if ok :
