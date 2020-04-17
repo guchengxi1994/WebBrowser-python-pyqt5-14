@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 08:58:31
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 10:11:17
+@LastEditTime: 2020-04-17 15:20:12
 '''
 
 import numpy as np 
@@ -22,7 +22,7 @@ def readColumn(path:str,sheetName):
     if os.path.exists(path):
         try:
             df = pd.read_excel(path,sheetName)
-            print(df)
+            # print(df)
             # sns.violinplot(df[])
         except Exception:
             raise SheetNotFoundError("表不存在")

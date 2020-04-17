@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 10:26:20
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 14:09:13
+@LastEditTime: 2020-04-17 15:26:14
 '''
 from PyQt5.QtWidgets import QWidget, QCheckBox, QApplication, QPushButton,QMessageBox
 from PyQt5.QtCore import Qt
@@ -96,9 +96,6 @@ class CheckColumn(QWidget):
                     continue
                 j.setChecked(True)
                 self.ps = self.columns
-                
-
-
         else:
             for i,j in self.varDict.items():
                 if i=='s' or i=='self':
