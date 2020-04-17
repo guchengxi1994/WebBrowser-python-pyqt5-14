@@ -5,10 +5,11 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 13:49:30
+@LastEditTime: 2020-04-17 15:04:22
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
-from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox
+from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
+    QCheckBox
 from PyQt5.QtGui import QIcon
 import sys,os,requests
 from PyQt5.QtWebEngineWidgets import QWebEngineView
@@ -50,7 +51,9 @@ class UI(QMainWindow,):
         self.url_edit = QtWidgets.QLineEdit()
         self.cwd = BASE_DIR + "/LocalWebTest/static/"
 
-        self.dataOptions = []
+        # self.listWidget = QListWidget()
+
+        # self.dataOptions = []
 
 
         self.browser = QWebEngineView()
@@ -110,7 +113,23 @@ class UI(QMainWindow,):
     #     # pass
     #     self.dataOptions = 
 
+    # def showMyMessageBox(self,options:list):
+    #     message = QMessageBox()
+    #     message.setIcon(QMessageBox.Information)
+    #     for i in options:
+    #         cb = QCheckBox(i)
+    #         message.setCheckBox(cb)
+        # message.show()
+        # message.exec_()
+
+    def showDialog(self):
+        
+
+        
+
+
     def anaData(self):
+        # import time
         """
         数据分析
         """
@@ -123,8 +142,8 @@ class UI(QMainWindow,):
             print("\n取消选择")
             return
 
-        print("\n你选择的文件为:")
-        print(fileName_choose)
+        # print("\n你选择的文件为:")
+        # print(fileName_choose)
         text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要分析的数据表名：')
         
         if ok:
@@ -133,17 +152,32 @@ class UI(QMainWindow,):
             else:
                 QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
                 options = readColumn(fileName_choose,sheetName='Sheet1')
+
+                # self.showMyMessageBox(options)
+
+                # if len(options) >0 and options is not None:
+                #     self.listWidget = QListWidget(self)
+                
+                # for item in options:
+                #     self.listWidget.addItem(item)
+                # if multiselected:
+                #     self.listWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
+
+                
                 # print(options)
-                ch = CheckColumn(options)
-                # print(ch.ps)
+                # ch = CheckColumn(options).sendData2()
+                # while(ch == []):
+                #     time.sleep(500)
+                # print(ch)
+                
                 
                 
         
         else:
             QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
             options = readColumn(fileName_choose,sheetName='Sheet1')
-            print (options)
-            ch = CheckColumn(options)
+            # print (options)
+            # ch = CheckColumn(options)
 
         
         

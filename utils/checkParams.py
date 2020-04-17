@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 10:26:20
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 13:52:11
+@LastEditTime: 2020-04-17 14:09:13
 '''
 from PyQt5.QtWidgets import QWidget, QCheckBox, QApplication, QPushButton,QMessageBox
 from PyQt5.QtCore import Qt
@@ -128,10 +128,15 @@ class CheckColumn(QWidget):
         # print(self.ps)
 
     def sendData(self):
+        # from .params import CheckParam
+        # CheckParam = self.ps
         self.close()
         # mySignal = pyqtSignal(list)
-        return self.ps
+        # return self.ps
         # mySignal.emit(self.ps)
+
+    def sendData2(self):
+        return self.ps
 
  
 
