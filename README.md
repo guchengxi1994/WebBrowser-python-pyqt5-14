@@ -5,17 +5,58 @@
  * @Author: xiaoshuyui
  * @Date: 2020-04-16 15:40:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-17 08:28:52
+ * @LastEditTime: 2020-04-17 17:21:55
  -->
 # WebBrowser-python-pyqt5-14
-web browser
 
-copied from https://github.com/zxingwork/Py/tree/master/Webbrowser
+2020.4.17
+
+# web browser
+
+浏览器主框架是从 https://github.com/zxingwork/Py/tree/master/Webbrowser 抄来的，因为昨天我还不会pyqt。后来今天我会了一点，改了部分icon，添了很多代码，优化了（1）关闭网页的时候判断，如果只有一个网页的话会关掉新建一个默认网页，而不是不关闭 （2）添加设置默认网页的代码 （3）添加数据分析icon跟部分逻辑 （4）原先这个浏览器网址如果不是以"http(s)://"打头的话无法正常访问，这个也优化了 （5）打开的时候大小也算是优化了一下吧 ：）
 
 learning PyQt5 ...
 
 目标是能在这个浏览器上使用Seaborn画图
 
+# 说明
 ## static文件夹是用来存储图片等静态资源
 ## utils是工具包
 ## LocalWebTest是本地服务器，用来测试用，Flask框架 
+## details 文件夹是系统无关的演示图像
+
+# 具体特性 
+
+### 1.程序主界面
+
+![Demo](details/1.png)
+
+访问的是localhost:5000，服务器没有起，所以看不到东西
+
+### 2.bing首页访问
+
+![Demo](details/2.png)
+
+看上去跟一般浏览器差不多，不过慢一点
+
+### 3.可以修改初始页
+
+![Demo](details/3.png)
+
+### 4.使用xls/csv(没试过)读取数据
+
+![Demo](details/4.png)
+
+### 5.读文件，手动填表名
+
+![Demo](details/5.png)
+
+为什么这样设计，因为我懒
+
+### 6.默认空白，就读取名为“Sheet1”的表
+
+![Demo](details/6.png)
+
+### 7.选择要分析的列——注意是列，竖着的
+
+![Demo](details/7.png)
