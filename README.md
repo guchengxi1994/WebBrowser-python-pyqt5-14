@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-04-16 15:40:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-17 17:21:55
+ * @LastEditTime: 2020-04-17 17:26:22
  -->
 # WebBrowser-python-pyqt5-14
 
@@ -29,34 +29,34 @@ learning PyQt5 ...
 
 ### 1.程序主界面
 
-![Demo](details/1.png)
+![Demo](./details/1.png)
 
 访问的是localhost:5000，服务器没有起，所以看不到东西
 
 ### 2.bing首页访问
 
-![Demo](details/2.png)
+![Demo](./details/2.png)
 
 看上去跟一般浏览器差不多，不过慢一点
 
 ### 3.可以修改初始页
 
-![Demo](details/3.png)
+![Demo](./details/3.png)
 
 ### 4.使用xls/csv(没试过)读取数据
 
-![Demo](details/4.png)
+![Demo](./details/4.png)
 
 ### 5.读文件，手动填表名
 
-![Demo](details/5.png)
+![Demo](./details/5.png)
 
 为什么这样设计，因为我懒
 
 ### 6.默认空白，就读取名为“Sheet1”的表
 
-![Demo](details/6.png)
+![Demo](./details/6.png)
 
 ### 7.选择要分析的列——注意是列，竖着的
 
-![Demo](details/7.png)
+![Demo](./details/7.png)
