@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 10:26:20
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 16:38:34
+@LastEditTime: 2020-04-17 16:42:31
 '''
 from PyQt5.QtWidgets import QWidget, QCheckBox, QApplication, QPushButton,QMessageBox, \
     QDialog,QCheckBox,QVBoxLayout,QHBoxLayout,QLabel,QDialog,QPushButton, \
@@ -105,7 +105,7 @@ class MyDialog(QDialog):
         self.setWindowTitle('CheckBoxDialog')
         self.vbox = QVBoxLayout(self)
         self.hbox = QHBoxLayout(self)
-        self.panel = QLabel(self)
+        # self.panel = QLabel(self)
 
         # self.dialog=QDialog()
 
@@ -150,13 +150,9 @@ class MyDialog(QDialog):
         self.hbox.addWidget(self.cancelBtn)
 
          #消息label与按钮组合纵向布局
-        self.vbox.addWidget(self.panel)
+        # self.vbox.addWidget(self.panel)
         self.vbox.addLayout(self.hbox)
-        # self.dialog.setLayout(vbox)
 
-        # self.dialog.setWindowModality(Qt.ApplicationModal)#该模式下，只有该dialog关闭，才可以关闭父界面
-
-        # self.dialog.exec_()
 
     
     def change_all(self):
