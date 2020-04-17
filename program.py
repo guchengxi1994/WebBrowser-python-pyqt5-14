@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 15:04:22
+@LastEditTime: 2020-04-17 15:04:57
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -50,10 +50,6 @@ class UI(QMainWindow,):
         self.tabs.setLayout(self.tabs_layout)
         self.url_edit = QtWidgets.QLineEdit()
         self.cwd = BASE_DIR + "/LocalWebTest/static/"
-
-        # self.listWidget = QListWidget()
-
-        # self.dataOptions = []
 
 
         self.browser = QWebEngineView()
@@ -109,18 +105,7 @@ class UI(QMainWindow,):
         self.set_data_button.triggered.connect(self.anaData)
 
     
-    # def getOptionData(self):
-    #     # pass
-    #     self.dataOptions = 
 
-    # def showMyMessageBox(self,options:list):
-    #     message = QMessageBox()
-    #     message.setIcon(QMessageBox.Information)
-    #     for i in options:
-    #         cb = QCheckBox(i)
-    #         message.setCheckBox(cb)
-        # message.show()
-        # message.exec_()
 
     def showDialog(self):
         
@@ -153,15 +138,7 @@ class UI(QMainWindow,):
                 QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
                 options = readColumn(fileName_choose,sheetName='Sheet1')
 
-                # self.showMyMessageBox(options)
 
-                # if len(options) >0 and options is not None:
-                #     self.listWidget = QListWidget(self)
-                
-                # for item in options:
-                #     self.listWidget.addItem(item)
-                # if multiselected:
-                #     self.listWidget.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
                 
                 # print(options)
@@ -176,12 +153,11 @@ class UI(QMainWindow,):
         else:
             QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
             options = readColumn(fileName_choose,sheetName='Sheet1')
-            # print (options)
-            # ch = CheckColumn(options)
+
 
         
         
-        # print("文件筛选器类型: ",filetype)
+
 
 
 
@@ -227,9 +203,6 @@ class UI(QMainWindow,):
         browser.loadFinished.connect(lambda :self.tabs.setTabText(i,browser.page().title()))
 
     def Closepage(self,i):
-        # if self.tabs.count() < 2:
-        #     return
-        # self.tabs.removeTab(i)
         if self.tabs.count() == 1:  
             self.tabs.removeTab(i)
             self.NewPage()
