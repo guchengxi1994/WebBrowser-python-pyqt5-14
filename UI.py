@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 10:12:39
+@LastEditTime: 2020-04-17 10:22:05
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox
@@ -37,7 +37,7 @@ class UI(QMainWindow,):
         super(UI, self).__init__()
         self.setWindowTitle('Web browser')
         self.resize(1280,960)
-        self.setWindowIcon(QtGui.QIcon(BASE_DIR + '/static/imgs/liulanqi.png'))
+        self.setWindowIcon(QtGui.QIcon(BASE_DIR + '/static/imgs/sun.png'))
         self.main_toolbar = QtWidgets.QToolBar()
         self.main_toolbar.setIconSize(QtCore.QSize(16,16))
         self.addToolBar(self.main_toolbar)
