@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 15:46:43
+@LastEditTime: 2020-04-17 16:40:09
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -52,7 +52,7 @@ class UI(QMainWindow,):
         self.url_edit = QtWidgets.QLineEdit()
         self.cwd = BASE_DIR + "/LocalWebTest/static/"
 
-        self.ps = []
+        # self.ps = []
         
         self.browser = QWebEngineView()
         # Url = 'https://www.baidu.com'
@@ -107,101 +107,14 @@ class UI(QMainWindow,):
         self.set_data_button.triggered.connect(self.anaData)
 
     
-
-
     def showDialog(self,options:list):
-        vbox = QVBoxLayout()
-        hbox = QHBoxLayout()
-        panel = QLabel()
-        # panel.setText("请选择：")
-        self.dialog=QDialog()
-        
-        self.okBtn=QPushButton("确定")
-        self.cancelBtn=QPushButton("取消")
-
-        self.okBtn.clicked.connect(self.ok)
-        self.cancelBtn.clicked.connect(self.cancel)
-
-        s = len(options)
-        # self.cb1 = QCheckBox('全选')
-        if s > 0:
-            self.varDict = locals()
-            self.varDict['self.c_all'] = QCheckBox('全选')
-            self.varDict['self.c_all'].stateChanged.connect(self.change_all)
-            # self.varDict['self.c_all'].move(20,20)
-            vbox.addWidget(self.varDict['self.c_all'])
-            height = 0
-            
-            for i in range(0,s):
-                height = 20+(i+1)*20
-                self.varDict['self.c_'+str(i)] = QCheckBox(options[i])
-                self.varDict['self.c_'+str(i)].stateChanged.connect(self.stateClicked)
-                # self.varDict['self.c_'+str(i)].move(30,height)
-                vbox.addWidget(self.varDict['self.c_'+str(i)])
+        from utils.checkParams import MyDialog
+        dialog = MyDialog(options)
+        result = dialog.exec_()
+        # if result :
+        print(dialog.ps)
 
 
-        self.dialog.resize(300,height+100)
-
-        self.dialog.setWindowTitle("提示信息！")
-         #okBtn.move(50,50)#使用layout布局设置，因此move效果失效
-          # 确定与取消按钮横向布局
-        hbox.addWidget(self.okBtn)
-        hbox.addWidget(self.cancelBtn)
-
-         #消息label与按钮组合纵向布局
-        vbox.addWidget(panel)
-        vbox.addLayout(hbox)
-        self.dialog.setLayout(vbox)
-
-        self.dialog.setWindowModality(Qt.ApplicationModal)#该模式下，只有该dialog关闭，才可以关闭父界面
-
-
-        # for i,j in self.varDict.items():
-        #     print(i)
-        #     print(j)
-        self.dialog.exec_()
-
-
-       #槽函数如下：
-    def ok(self):
-        print("确定保存！")
-        self.dialog.close()
-    def cancel(self):
-        print("取消保存！")
-        self.dialog.close()
-
-    
-    def change_all(self):
-        ss = set()
-        if self.varDict['self.c_all'].checkState() == Qt.Checked:
-            for i,j in self.varDict.items():
-
-                if  not  i.startswith('self.c_'):
-                    continue
-                j.setChecked(True)
-                ss.add(j.text() if j.text()!="全选" else None)
-            ss = list(ss)
-            self.ps = list(filter(None, ss)) 
-            print(self.ps)
-        else:
-            for i,j in self.varDict.items():
-                if   not  i.startswith('self.c_'):
-                    continue
-                j.setChecked(False)
-                self.ps = []
-
-    
-    
-    def stateClicked(self):
-        ss = set()
-        for i,j in self.varDict.items():
-
-            if not  i.startswith('self.c_'):
-                continue
-            lp=self.varDict[i]
-            if lp.isChecked():
-                ss.add(lp.text())       
-        self.ps = list(ss)
         
 
         
@@ -232,14 +145,10 @@ class UI(QMainWindow,):
                 QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
                 options = readColumn(fileName_choose,sheetName='Sheet1')
 
+                # self.showDialog(options)
                 self.showDialog(options)
 
-                
-                # print(options)
-                # ch = CheckColumn(options).sendData2()
-                # while(ch == []):
-                #     time.sleep(500)
-                # print(ch)
+
                 
                 
                 
@@ -247,11 +156,6 @@ class UI(QMainWindow,):
         else:
             QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
             options = readColumn(fileName_choose,sheetName='Sheet1')
-
-
-        
-        
-
 
 
 

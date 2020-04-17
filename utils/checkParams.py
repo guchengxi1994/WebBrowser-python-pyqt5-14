@@ -5,15 +5,15 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 10:26:20
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 15:26:14
+@LastEditTime: 2020-04-17 16:38:34
 '''
-from PyQt5.QtWidgets import QWidget, QCheckBox, QApplication, QPushButton,QMessageBox
+from PyQt5.QtWidgets import QWidget, QCheckBox, QApplication, QPushButton,QMessageBox, \
+    QDialog,QCheckBox,QVBoxLayout,QHBoxLayout,QLabel,QDialog,QPushButton, \
+    QDialogButtonBox
 from PyQt5.QtCore import Qt
 import sys
 
 class CheckColumn(QWidget):
-    
-
     def __init__(self,columns:list):
         super().__init__()       
         self.columns = columns
@@ -47,46 +47,8 @@ class CheckColumn(QWidget):
             self.bt.clicked.connect(self.sendData)
 
         self.resize(300,height+100)
-        # self.setWindowTitle('早点毕业吧--复选框')
-
-        # self.cb1.move(20,20)
-        # self.cb2.move(30,50)
-        # self.cb3.move(30,80)
-        # self.cb4.move(30,110)
-
-            
-       
-        #每当复选框的状态改变时，即每当用户选中或取消选中该信号时，就会发出此信号。所以当产生此信号的时候，我们将其连接相应的槽函数。其中全选（cb1）那个复选框对应的是changecb1，其它的是changecb2。
-      
-        # self.cb1.stateChanged.connect(self.changecb1)
-        # self.cb2.stateChanged.connect(self.changecb2)
-        # self.cb3.stateChanged.connect(self.changecb2)
-        # self.cb4.stateChanged.connect(self.changecb2)
-        # bt.clicked.connect(self.go)
-
         self.show()
-    
-        #当按钮被点击之后，根据复选框被选中的类型及数量，我们弹出了不同的信息。
-
-    
-     
-    # def go(self):
-    #     if self.cb2.isChecked() and self.cb3.isChecked() and self.cb4.isChecked():
-    #         QMessageBox.information(self,'I Love U','你是我的宝贝！')
-    #     elif self.cb2.isChecked() and self.cb3.isChecked():
-    #         QMessageBox.information(self,'I Love U','你是我的！')
-    #     elif self.cb2.isChecked() and self.cb4.isChecked():
-    #         QMessageBox.information(self,'I Love U','你是宝贝！')
-    #     elif self.cb3.isChecked() and self.cb4.isChecked():
-    #         QMessageBox.information(self,'I Love U','我的宝贝！')
-    #     elif self.cb2.isChecked():
-    #         QMessageBox.information(self,'I Love U','你是！')
-    #     elif self.cb3.isChecked():
-    #         QMessageBox.information(self,'I Love U','我的！')
-    #     elif self.cb4.isChecked():
-    #         QMessageBox.information(self,'I Love U','宝贝！') 
-    #     else:
-    #         QMessageBox.information(self,'I Love U','貌似你没有勾选啊！')
+       
 
     def change_all(self):
         if self.varDict['self.c_all'].checkState() == Qt.Checked:
@@ -135,7 +97,118 @@ class CheckColumn(QWidget):
     def sendData2(self):
         return self.ps
 
- 
+
+
+class MyDialog(QDialog):
+    def __init__(self,options,parent=None):
+        super(MyDialog, self).__init__(parent)
+        self.setWindowTitle('CheckBoxDialog')
+        self.vbox = QVBoxLayout(self)
+        self.hbox = QHBoxLayout(self)
+        self.panel = QLabel(self)
+
+        # self.dialog=QDialog()
+
+        self.ps = []
+        
+        self.okBtn=QPushButton("确定")
+        self.cancelBtn=QPushButton("取消")
+
+        self.okBtn.clicked.connect(self.ok)
+        self.cancelBtn.clicked.connect(self.cancel)
+
+        # buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel, \
+        #     Qt.Horizontal, self)
+
+        # buttons.accepted.connect(self.accept)
+        # buttons.rejected.connect(self.reject)
+
+        s = len(options)
+        # self.cb1 = QCheckBox('全选')
+        if s > 0:
+            self.varDict = locals()
+            self.varDict['self.c_all'] = QCheckBox('全选')
+            self.varDict['self.c_all'].stateChanged.connect(self.change_all)
+            # self.varDict['self.c_all'].move(20,20)
+            self.vbox.addWidget(self.varDict['self.c_all'])
+            height = 0
+            
+            for i in range(0,s):
+                height = 20+(i+1)*20
+                self.varDict['self.c_'+str(i)] = QCheckBox(options[i])
+                self.varDict['self.c_'+str(i)].stateChanged.connect(self.stateClicked)
+                # self.varDict['self.c_'+str(i)].move(30,height)
+                self.vbox.addWidget(self.varDict['self.c_'+str(i)])
+
+
+        # self.dialog.resize(300,height+100)
+
+        # self.dialog.setWindowTitle("提示信息！")
+         #okBtn.move(50,50)#使用layout布局设置，因此move效果失效
+          # 确定与取消按钮横向布局
+        self.hbox.addWidget(self.okBtn)
+        self.hbox.addWidget(self.cancelBtn)
+
+         #消息label与按钮组合纵向布局
+        self.vbox.addWidget(self.panel)
+        self.vbox.addLayout(self.hbox)
+        # self.dialog.setLayout(vbox)
+
+        # self.dialog.setWindowModality(Qt.ApplicationModal)#该模式下，只有该dialog关闭，才可以关闭父界面
+
+        # self.dialog.exec_()
+
+    
+    def change_all(self):
+        ss = set()
+        if self.varDict['self.c_all'].checkState() == Qt.Checked:
+            for i,j in self.varDict.items():
+
+                if  not  i.startswith('self.c_'):
+                    continue
+                j.setChecked(True)
+                ss.add(j.text() if j.text()!="全选" else None)
+            sa = list(ss)
+            self.ps = list(filter(None, sa)) 
+            # print(self.ps)
+        else:
+            for i,j in self.varDict.items():
+                if   not  i.startswith('self.c_'):
+                    continue
+                j.setChecked(False)
+                self.ps = []
+
+    
+    
+    def stateClicked(self):
+        ss = set()
+        for i,j in self.varDict.items():
+
+            if not  i.startswith('self.c_'):
+                continue
+            lp=self.varDict[i]
+            if lp.isChecked():
+                ss.add(lp.text() if lp.text()!="全选" else None)  
+            sa = list(ss)     
+        self.ps = list(filter(None, sa)) 
+    
+    #槽函数如下：
+    def ok(self):
+        # print("确定保存！")
+        self.close()
+    def cancel(self):
+        self.ps = []
+        # print("取消保存！")
+        self.close()
+
+    @staticmethod
+    def getData(options,parent=None):
+        dialog = MyDialog(options,parent)
+        result = dialog.exec_()
+        return dialog.ps
+
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
