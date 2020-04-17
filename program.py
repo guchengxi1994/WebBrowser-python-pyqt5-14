@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 10:22:05
+@LastEditTime: 2020-04-17 13:49:30
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox
@@ -14,6 +14,7 @@ import sys,os,requests
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 import utils.repath as repath
 from utils.analyse import *
+from utils.checkParams import CheckColumn
 
 
 BASE_DIR = os.path.abspath(os.curdir)
@@ -48,6 +49,8 @@ class UI(QMainWindow,):
         self.tabs.setLayout(self.tabs_layout)
         self.url_edit = QtWidgets.QLineEdit()
         self.cwd = BASE_DIR + "/LocalWebTest/static/"
+
+        self.dataOptions = []
 
 
         self.browser = QWebEngineView()
@@ -103,8 +106,9 @@ class UI(QMainWindow,):
         self.set_data_button.triggered.connect(self.anaData)
 
     
-    def showOption(self):
-        pass
+    # def getOptionData(self):
+    #     # pass
+    #     self.dataOptions = 
 
     def anaData(self):
         """
@@ -129,12 +133,17 @@ class UI(QMainWindow,):
             else:
                 QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
                 options = readColumn(fileName_choose,sheetName='Sheet1')
-                print(options)
+                # print(options)
+                ch = CheckColumn(options)
+                # print(ch.ps)
+                
+                
         
         else:
             QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
             options = readColumn(fileName_choose,sheetName='Sheet1')
             print (options)
+            ch = CheckColumn(options)
 
         
         
