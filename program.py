@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 14:03:18
+@LastEditTime: 2020-04-20 14:28:32
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -113,6 +113,16 @@ class UI(QMainWindow,):
         self.set_test_button.triggered.connect(self.test)
 
         self.url_edit.returnPressed.connect(self.inputTurn)
+
+    
+    def mousePressEvent(self,event):
+        # return super().mousePressEvent()
+        if event.buttons () == QtCore.Qt.RightButton:                        # 右键按下
+            # self.setText ("单击鼠标右键的事件: 自己定义")
+            print("单击鼠标右键")
+
+
+
 
 
     def inputTurn(self):
