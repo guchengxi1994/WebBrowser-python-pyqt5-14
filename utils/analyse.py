@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 08:58:31
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 10:00:56
+@LastEditTime: 2020-04-20 10:59:18
 '''
 
 import numpy as np 
@@ -46,13 +46,42 @@ def readColumn(path:str,sheetName):
         # pass
 
     
+def plotFigure(path:str,sheetName:str,column:list=[],figure:str=""):
+    df = pd.read_excel(path,sheetName)
+    d = []
+    if len(column)>0:
+        for i in column:
+            d.append(i)
+            sns.lineplot( data=d)
+            sns.despine()
+            # filePath = path.split('/')
+            filePath = os.path.abspath(os.path.join(os.path.dirname(path),os.path.pardir))
+            # print(filePath)
+            figurePath = filePath + os.sep + 'static'+os.sep +"test.png"
+            # plt.show()
+            plt.savefig(figurePath, bbox_inches='tight')
+            return figurePath
+                
+    else:
+        sns.lineplot( data=df)
+        sns.despine()
+            # filePath = path.split('/')
+        filePath = os.path.abspath(os.path.join(os.path.dirname(path),os.path.pardir))
+            # print(filePath)
+        figurePath = filePath + os.sep + 'static'+os.sep +"test.png"
+            # plt.show()
+        plt.savefig(figurePath, bbox_inches='tight')
+        return figurePath
+
 
 
         
 
 
 
-# if __name__ == "__main__":
-#     path = "D:/testALg/WebBrowser-python-pyqt5-14/LocalWebTest/static/data.xls"
-#     p = readColumn(path,'Sheet2')
-#     print(p)
+if __name__ == "__main__":
+    
+    path = "D:/testALg/WebBrowser-python-pyqt5-14/LocalWebTest/static/data.xls"
+    # p = readColumn(path,'Sheet2')
+    # print(p)
+    plotFigure(path,'Sheet1')

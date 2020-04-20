@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 10:11:48
+@LastEditTime: 2020-04-20 13:41:45
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -119,13 +119,18 @@ class UI(QMainWindow,):
         if len(options)>0:
             dialog_column = MyDialog_column_chosen(options)
             result = dialog_column.exec_()
-            # if result :
-            print(dialog_column.ps)
-            dialog_figureType = MyDialog_FigureType_chosen()
-            retult = dialog_figureType.exec_()
-            print(dialog_figureType.info1)
+            if len(dialog_column.ps)>0 :
+                # print(dialog_column.ps)
+                dialog_figureType = MyDialog_FigureType_chosen()
+                retult = dialog_figureType.exec_()              
+                return dialog_column.ps,dialog_figureType.info1
+            else:
+                dialog_figureType = MyDialog_FigureType_chosen()
+                retult = dialog_figureType.exec_()              
+                return options,dialog_figureType.info1
         else:
             QMessageBox.critical(self, "错误对话框", "表名错误或者为空表", QMessageBox.Yes )
+            return [],""
 
        
 
@@ -133,11 +138,20 @@ class UI(QMainWindow,):
 
 
     def test(self):
-        # pass 
-        from utils.checkParams import MyDialog_FigureType_chosen
-        dialog = MyDialog_FigureType_chosen()
-        retult = dialog.exec_()
-        print(dialog.info1)
+        # import requests
+        url = 'http://localhost:5000/showImg'
+        # self.OpenUrlLine(url)
+        
+        # data = {'imgName':'D:\\testALg\\WebBrowser-python-pyqt5-14\\LocalWebTest\\static\\test.png'}
+        img = '?imgName=D:\\testALg\\WebBrowser-python-pyqt5-14\\LocalWebTest\\static\\test.png'
+        self.browser.setUrl(QtCore.QUrl( url+img))
+        # requests.post(url=url,data=data)
+        
+        # pass
+        # from utils.checkParams import MyDialog_FigureType_chosen
+        # dialog = MyDialog_FigureType_chosen()
+        # retult = dialog.exec_()
+        # print(dialog.info1)
         
 
 
@@ -161,19 +175,26 @@ class UI(QMainWindow,):
         
         if ok:
             if text != "":
-                print(text)          
+                sheetName = text
+                # print(text)          
                 options = readColumn(fileName_choose,sheetName=text)
-                self.showDialog(options)
+                ps,formType = self.showDialog(options)
             else:
+                sheetName = 'Sheet1'
                 QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
                 options = readColumn(fileName_choose,sheetName='Sheet1')
-                print(options)
+                # print(options)
                 # self.showDialog(options)
-                self.showDialog(options)
+                ps,formType = self.showDialog(options)
         else:
+            sheetName = 'Sheet1'
             QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
             options = readColumn(fileName_choose,sheetName='Sheet1')
-            self.showDialog(options)
+            ps,formType = self.showDialog(options)
+        
+        
+
+        
 
 
 
@@ -205,7 +226,11 @@ class UI(QMainWindow,):
         self.urlline = self.url_edit.text()
         print(self.urlline)
         # self.url_edit.setText(url_edit)
-        self.browser.setUrl(QtCore.QUrl("http://" + self.urlline))
+        if self.urlline.startswith('http://') or self.urlline.startswith('https://'):
+            self.browser.setUrl(QtCore.QUrl( self.urlline))
+        else:
+            self.browser.setUrl(QtCore.QUrl( "http://" +self.urlline))
+
 
     def NewPage(self,url=defaultUrl,label=''):
         browser = QWebEngineView()
