@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 13:41:45
+@LastEditTime: 2020-04-20 14:03:18
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -111,6 +111,17 @@ class UI(QMainWindow,):
         self.set_default_openPage_button.triggered.connect(self.defaultPage)
         self.set_data_button.triggered.connect(self.anaData)
         self.set_test_button.triggered.connect(self.test)
+
+        self.url_edit.returnPressed.connect(self.inputTurn)
+
+
+    def inputTurn(self):
+        # print(self.url_edit.text())
+        s = self.url_edit.text()
+        if s.startswith("http://") or s.startswith("https://"):
+            self.browser.setUrl(QtCore.QUrl( self.url_edit.text()))
+        else:
+            self.browser.setUrl(QtCore.QUrl( 'http://'+ self.url_edit.text()))
 
     
     def showDialog(self,options:list):
