@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 10:26:20
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 09:40:16
+@LastEditTime: 2020-04-20 10:14:22
 '''
 from PyQt5.QtWidgets import QWidget, QCheckBox, QApplication, QPushButton,QMessageBox, \
     QDialog,QCheckBox,QVBoxLayout,QHBoxLayout,QLabel,QDialog,QPushButton, \
@@ -231,14 +231,18 @@ class MyDialog_FigureType_chosen(QDialog):
     
 
     def ok(self):
+        # self.info1 = ""
         # pass
         if self.rb1.isChecked():
             self.info1 = self.rb1.text()
         elif self.rb2.isChecked():
             self.info1 = self.rb2.text()
-        else:
+        elif self.rb3.isChecked():
             self.info1 = self.rb3.text()
-        
+        # print("===============>"+self.info1)
+        else:
+            self.info1 = self.rb1.text()
+            QMessageBox.warning(self, "警告对话框", "将默认使用折线图进行分析！！", QMessageBox.Yes )
         self.close()
 
         # print(self.info1)

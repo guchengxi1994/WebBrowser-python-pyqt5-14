@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 09:19:14
+@LastEditTime: 2020-04-20 10:11:48
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -115,10 +115,20 @@ class UI(QMainWindow,):
     
     def showDialog(self,options:list):
         from utils.checkParams import MyDialog_column_chosen
-        dialog = MyDialog_column_chosen(options)
-        result = dialog.exec_()
-        # if result :
-        print(dialog.ps)
+        from utils.checkParams import MyDialog_FigureType_chosen
+        if len(options)>0:
+            dialog_column = MyDialog_column_chosen(options)
+            result = dialog_column.exec_()
+            # if result :
+            print(dialog_column.ps)
+            dialog_figureType = MyDialog_FigureType_chosen()
+            retult = dialog_figureType.exec_()
+            print(dialog_figureType.info1)
+        else:
+            QMessageBox.critical(self, "错误对话框", "表名错误或者为空表", QMessageBox.Yes )
+
+       
+
 
 
 
@@ -150,23 +160,20 @@ class UI(QMainWindow,):
         text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要分析的数据表名：')
         
         if ok:
-            if text != "":               
+            if text != "":
+                print(text)          
                 options = readColumn(fileName_choose,sheetName=text)
+                self.showDialog(options)
             else:
                 QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
                 options = readColumn(fileName_choose,sheetName='Sheet1')
-
+                print(options)
                 # self.showDialog(options)
                 self.showDialog(options)
-
-
-                
-                
-                
-        
         else:
             QMessageBox.warning(self, "警告对话框", "将使用默认的\'Sheet1\'作为分析表", QMessageBox.Yes )
             options = readColumn(fileName_choose,sheetName='Sheet1')
+            self.showDialog(options)
 
 
 
