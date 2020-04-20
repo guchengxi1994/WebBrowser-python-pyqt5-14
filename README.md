@@ -5,11 +5,11 @@
  * @Author: xiaoshuyui
  * @Date: 2020-04-16 15:40:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-20 14:15:58
+ * @LastEditTime: 2020-04-20 14:19:47
  -->
 # WebBrowser-python-pyqt5-14
 
-2020.4.17
+## 2020.4.17 修改说明
 
 # web browser
 
