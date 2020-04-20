@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 16:09:43
+@LastEditTime: 2020-04-20 17:34:49
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -48,6 +48,10 @@ class UI(QMainWindow,):
         self.tabs.setDocumentMode(True)
         self.tabs.setTabsClosable(True)
         self.tabs_layout = QtWidgets.QGridLayout()
+        
+
+        
+
         self.tabs.setLayout(self.tabs_layout)
         self.url_edit = QtWidgets.QLineEdit()
         self.cwd = BASE_DIR + "/LocalWebTest/static/"
@@ -111,7 +115,7 @@ class UI(QMainWindow,):
         self.set_default_openPage_button.triggered.connect(self.defaultPage)
         self.set_data_button.triggered.connect(self.anaData)
         self.set_test_button.triggered.connect(self.test)
-
+        #回车事件判断
         self.url_edit.returnPressed.connect(self.inputTurn)
 
     
@@ -169,18 +173,29 @@ class UI(QMainWindow,):
 
     
     def mousePressEvent(self,event):
-        if self.url_edit.text().startswith("http://localhost:5000/showImg") and \
-            event.buttons () == QtCore.Qt.RightButton:
+        if event.buttons () == QtCore.Qt.RightButton:
+            if self.url_edit.text().startswith("http://localhost:5000/showImg"): 
 
-            menu = QMenu()
-            b1 = menu.addAction("修改X轴名")
-            b2 = menu.addAction("修改Y轴名")
-            b3 = menu.addAction("关于...")
+                menu = QMenu()
+                b1 = menu.addAction("修改X轴名")
+                b2 = menu.addAction("修改Y轴名")
+                b3 = menu.addAction("关于...")
 
-            b3.triggered.connect(self.b3Clicked)
-            b1.triggered.connect(self.b1Clicked)
-            b2.triggered.connect(self.b2Clicked)
-            menu.exec_(QCursor.pos())
+                b3.triggered.connect(self.b3Clicked)
+                b1.triggered.connect(self.b1Clicked)
+                b2.triggered.connect(self.b2Clicked)
+                menu.exec_(QCursor.pos())
+            
+            else:
+                menu = QMenu()
+                b4 = menu.addAction("收藏网页")
+                # b2 = menu.addAction("修改Y轴名")
+                # b3 = menu.addAction("关于...")
+
+                b4.triggered.connect(self.b4Clicked)
+                # b1.triggered.connect(self.b1Clicked)
+                # b2.triggered.connect(self.b2Clicked)
+                menu.exec_(QCursor.pos())
 
     
 
@@ -192,6 +207,10 @@ class UI(QMainWindow,):
 
     def b2Clicked(self):
         text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要修改的Y轴名：')
+
+    def b4Clicked(self):
+        # text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要修改的Y轴名：')
+        pass
 
         
 
