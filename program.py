@@ -5,12 +5,12 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 14:28:32
+@LastEditTime: 2020-04-20 16:09:43
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
-    QCheckBox,QVBoxLayout,QHBoxLayout,QLabel,QDialog,QPushButton
-from PyQt5.QtGui import QIcon
+    QCheckBox,QVBoxLayout,QHBoxLayout,QLabel,QDialog,QPushButton,QMenu
+from PyQt5.QtGui import QIcon,QCursor
 from PyQt5.QtCore import Qt
 import sys,os,requests
 from PyQt5.QtWebEngineWidgets import QWebEngineView
@@ -166,13 +166,33 @@ class UI(QMainWindow,):
         # data = {'imgName':'D:\\testALg\\WebBrowser-python-pyqt5-14\\LocalWebTest\\static\\test.png'}
         img = '?imgName=D:\\testALg\\WebBrowser-python-pyqt5-14\\LocalWebTest\\static\\test.png'
         self.browser.setUrl(QtCore.QUrl( url+img))
-        # requests.post(url=url,data=data)
-        
-        # pass
-        # from utils.checkParams import MyDialog_FigureType_chosen
-        # dialog = MyDialog_FigureType_chosen()
-        # retult = dialog.exec_()
-        # print(dialog.info1)
+
+    
+    def mousePressEvent(self,event):
+        if self.url_edit.text().startswith("http://localhost:5000/showImg") and \
+            event.buttons () == QtCore.Qt.RightButton:
+
+            menu = QMenu()
+            b1 = menu.addAction("修改X轴名")
+            b2 = menu.addAction("修改Y轴名")
+            b3 = menu.addAction("关于...")
+
+            b3.triggered.connect(self.b3Clicked)
+            b1.triggered.connect(self.b1Clicked)
+            b2.triggered.connect(self.b2Clicked)
+            menu.exec_(QCursor.pos())
+
+    
+
+    def b3Clicked(self):
+        QMessageBox.information(self, "提示：", '   作者很帅')
+
+    def b1Clicked(self):
+        text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要修改的X轴名：')
+
+    def b2Clicked(self):
+        text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要修改的Y轴名：')
+
         
 
 

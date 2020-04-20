@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 08:29:09
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 13:41:01
+@LastEditTime: 2020-04-20 16:15:09
 '''
 from flask import Flask, request,render_template
 from flask_cors import CORS,cross_origin
@@ -18,7 +18,7 @@ CORS(app, supports_credentials=True, resources=r'/*')
 
 @app.route('/')
 def hello_world():
-    return 'hello Junrui'
+    return 'hello World'
 
 @app.route("/showImg")
 def showImage():
