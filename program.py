@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 16:40:09
+@LastEditTime: 2020-04-20 09:19:14
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -72,9 +72,11 @@ class UI(QMainWindow,):
         self.stop_button = QAction(QIcon(BASE_DIR + '/static/imgs/close.png'),'Stop',self)
         self.reload_button = QAction(QIcon(BASE_DIR + '/static/imgs/shuaxin.png'),'Reload',self)
         self.add_button = QAction(QIcon(BASE_DIR + '/static/imgs/add.png'),'Addpage',self)
-
+        
+        #DIY
         self.set_default_openPage_button = QAction(QIcon(BASE_DIR + '/static/imgs/lock.png'),'SetDefault',self)
         self.set_data_button = QAction(QIcon(BASE_DIR + '/static/imgs/data.png'),'AnalyzeData',self)
+        self.set_test_button = QAction(QIcon(BASE_DIR + '/static/imgs/test.png'),'TestButton',self)
 
 
 
@@ -86,8 +88,11 @@ class UI(QMainWindow,):
         self.main_toolbar.addWidget(self.url_edit)
         self.main_toolbar.addAction(self.turn_button)
 
+
+        #DIY
         self.main_toolbar.addAction(self.set_default_openPage_button)
         self.main_toolbar.addAction(self.set_data_button)
+        self.main_toolbar.addAction(self.set_test_button)
         
 
 
@@ -102,21 +107,27 @@ class UI(QMainWindow,):
         self.add_button.triggered.connect(self.NewPage)
         self.tabs.tabCloseRequested.connect(self.Closepage)
 
-
+        #DIY
         self.set_default_openPage_button.triggered.connect(self.defaultPage)
         self.set_data_button.triggered.connect(self.anaData)
+        self.set_test_button.triggered.connect(self.test)
 
     
     def showDialog(self,options:list):
-        from utils.checkParams import MyDialog
-        dialog = MyDialog(options)
+        from utils.checkParams import MyDialog_column_chosen
+        dialog = MyDialog_column_chosen(options)
         result = dialog.exec_()
         # if result :
         print(dialog.ps)
 
 
-        
 
+    def test(self):
+        # pass 
+        from utils.checkParams import MyDialog_FigureType_chosen
+        dialog = MyDialog_FigureType_chosen()
+        retult = dialog.exec_()
+        print(dialog.info1)
         
 
 

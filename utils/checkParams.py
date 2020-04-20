@@ -5,11 +5,11 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 10:26:20
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-17 16:42:31
+@LastEditTime: 2020-04-20 09:40:16
 '''
 from PyQt5.QtWidgets import QWidget, QCheckBox, QApplication, QPushButton,QMessageBox, \
     QDialog,QCheckBox,QVBoxLayout,QHBoxLayout,QLabel,QDialog,QPushButton, \
-    QDialogButtonBox
+    QDialogButtonBox,QRadioButton,QButtonGroup
 from PyQt5.QtCore import Qt
 import sys
 
@@ -99,9 +99,9 @@ class CheckColumn(QWidget):
 
 
 
-class MyDialog(QDialog):
+class MyDialog_column_chosen(QDialog):
     def __init__(self,options,parent=None):
-        super(MyDialog, self).__init__(parent)
+        super(MyDialog_column_chosen, self).__init__(parent)
         self.setWindowTitle('CheckBoxDialog')
         self.vbox = QVBoxLayout(self)
         self.hbox = QHBoxLayout(self)
@@ -199,9 +199,61 @@ class MyDialog(QDialog):
 
     @staticmethod
     def getData(options,parent=None):
-        dialog = MyDialog(options,parent)
+        dialog = MyDialog_column_chosen(options,parent)
         result = dialog.exec_()
         return dialog.ps
+
+    
+
+class MyDialog_FigureType_chosen(QDialog):
+    def __init__(self,parent=None):
+        super(MyDialog_FigureType_chosen,self).__init__(parent)
+        self.setWindowTitle('RadioBoxDialog')
+        self.vbox = QVBoxLayout(self)
+        # self.hbox = QHBoxLayout(self)
+
+        self.info1 = ''
+
+        self.rb1 = QRadioButton('折线图',self)
+        self.rb2 = QRadioButton('饼图',self)
+        self.rb3 = QRadioButton('柱状图',self)
+
+        self.bt1 = QPushButton('提交',self)
+        self.bt1.clicked.connect(self.ok)
+
+        # self.bt1.move(20,120)
+
+        self.vbox.addWidget(self.rb1)
+        self.vbox.addWidget(self.rb2)
+        self.vbox.addWidget(self.rb3)
+        self.vbox.addWidget(self.bt1)
+
+    
+
+    def ok(self):
+        # pass
+        if self.rb1.isChecked():
+            self.info1 = self.rb1.text()
+        elif self.rb2.isChecked():
+            self.info1 = self.rb2.text()
+        else:
+            self.info1 = self.rb3.text()
+        
+        self.close()
+
+        # print(self.info1)
+
+
+
+
+    @staticmethod
+    def getData(options,parent=None):
+        dialog = MyDialog_FigureType_chosen(parent)
+        result = dialog.exec_()
+        return dialog.info1
+
+        
+
 
 
 
