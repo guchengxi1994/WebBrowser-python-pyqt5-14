@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 08:58:31
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 10:59:18
+@LastEditTime: 2020-04-21 10:29:30
 '''
 
 import numpy as np 
@@ -15,7 +15,7 @@ import seaborn as sns
 import os
 # from myError import SheetNotFoundError,SheetReadError
 # from .myError import SheetNotFoundError,SheetReadError
-from PyQt5.QtWidgets import QWidget
+# from PyQt5.QtWidgets import QWidget
 
 def readColumn(path:str,sheetName):
     params = []
@@ -51,16 +51,18 @@ def plotFigure(path:str,sheetName:str,column:list=[],figure:str=""):
     d = []
     if len(column)>0:
         for i in column:
-            d.append(i)
-            sns.lineplot( data=d)
-            sns.despine()
+            d.append(df[i])
+        sns.lineplot( data=d)
+        sns.despine()
             # filePath = path.split('/')
-            filePath = os.path.abspath(os.path.join(os.path.dirname(path),os.path.pardir))
+        filePath = os.path.abspath(os.path.join(os.path.dirname(path),os.path.pardir))
             # print(filePath)
-            figurePath = filePath + os.sep + 'static'+os.sep +"test.png"
+        figurePath = filePath + os.sep + 'static'+os.sep +"test.png"
             # plt.show()
-            plt.savefig(figurePath, bbox_inches='tight')
-            return figurePath
+        if  os.path.exists(figurePath):
+            os.remove(figurePath)
+        plt.savefig(figurePath, bbox_inches='tight')
+        return figurePath
                 
     else:
         sns.lineplot( data=df)

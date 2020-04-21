@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-21 09:52:08
+@LastEditTime: 2020-04-21 10:25:56
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -122,6 +122,7 @@ class UI(QMainWindow,):
         self.main_toolbar.addAction(self.set_default_openPage_button)
         self.main_toolbar.addAction(self.set_data_button)
         self.main_toolbar.addAction(self.set_store_button)
+        #测试按钮
         self.main_toolbar.addAction(self.set_test_button)
         
 
@@ -140,6 +141,8 @@ class UI(QMainWindow,):
         #DIY
         self.set_default_openPage_button.triggered.connect(self.defaultPage)
         self.set_data_button.triggered.connect(self.anaData)
+        self.set_store_button.triggered.connect(self.showFavs)
+        #测试按钮
         self.set_test_button.triggered.connect(self.test)
         #回车事件判断
         self.url_edit.returnPressed.connect(self.inputTurn)
@@ -185,6 +188,18 @@ class UI(QMainWindow,):
 
        
 
+    def showFavs(self):
+        """
+        显示收藏的网页
+        """
+        menu = QMenu()
+        vDict = locals()
+        s = len(self.favWebs)
+        if s>0:
+            for i in range(0,s):
+                vDict['x'+str(i)] = menu.addAction(self.favWebs[i])
+                vDict['x'+str(i)].triggered.connect(self.favWebTurn)      
+        menu.exec_(QCursor.pos())
 
 
 
@@ -228,13 +243,9 @@ class UI(QMainWindow,):
                 menu = QMenu()
                 b4 = menu.addAction("收藏网页")
                 b5 = menu.addAction("设为默认...")
-                # b2 = menu.addAction("修改Y轴名")
-                # b3 = menu.addAction("关于...")
 
                 b4.triggered.connect(self.b4Clicked)
                 b5.triggered.connect(self.b5Clicked)
-                # b1.triggered.connect(self.b1Clicked)
-                # b2.triggered.connect(self.b2Clicked)
                 menu.exec_(QCursor.pos())
 
     
@@ -249,9 +260,6 @@ class UI(QMainWindow,):
         text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要修改的Y轴名：')
 
     def b4Clicked(self):
-        # text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要修改的Y轴名：')
-        # pass
-        # print(self.url_edit.text())
         ss = set(self.favWebs)
         ss.add(self.url_edit.text())
         self.favWebs = list(ss)
@@ -282,12 +290,8 @@ class UI(QMainWindow,):
 
 
 
-        
-
-        
-
-
     def anaData(self):
+        # ps = []
         # import time
         """
         数据分析
@@ -324,7 +328,22 @@ class UI(QMainWindow,):
             options = readColumn(fileName_choose,sheetName='Sheet1')
             ps,formType = self.showDialog(options)
         
-        
+        ps = list(set(ps))
+        # print(ps)
+        print(ps)
+        if len(ps)>0 :
+            figurePath = plotFigure(fileName_choose,sheetName,ps,formType)
+
+            from utils.webTest import check_aliveness
+            result = check_aliveness('127.0.0.1',5000)
+            if result:
+                import requests
+                url = 'http://localhost:5000/showImg'
+                img = '?imgName='+figurePath
+                self.browser.setUrl(QtCore.QUrl( url+img))
+            else:
+                QMessageBox.warning(self, "警告对话框", "服务器未启动", QMessageBox.Yes )
+            
 
         
 
