@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-21 09:46:00
+@LastEditTime: 2020-04-21 09:52:08
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -227,10 +227,12 @@ class UI(QMainWindow,):
             else:
                 menu = QMenu()
                 b4 = menu.addAction("收藏网页")
+                b5 = menu.addAction("设为默认...")
                 # b2 = menu.addAction("修改Y轴名")
                 # b3 = menu.addAction("关于...")
 
                 b4.triggered.connect(self.b4Clicked)
+                b5.triggered.connect(self.b5Clicked)
                 # b1.triggered.connect(self.b1Clicked)
                 # b2.triggered.connect(self.b2Clicked)
                 menu.exec_(QCursor.pos())
@@ -256,8 +258,16 @@ class UI(QMainWindow,):
         f = open(BASE_DIR + '/static/storage.txt','w',encoding='utf-8')
 
         for i in range(0,len(self.favWebs)):
-            f.write(self.favWebs[i]+"\n")
-        
+            f.write(self.favWebs[i]+"\n")        
+        f.close()
+
+    def b5Clicked(self):
+        text = self.url_edit.text()
+        f = open(BASE_DIR+"/static/net.txt",'w',encoding='utf-8')
+        if str(text).startswith("http://") or str(text).startswith("https://"):                      
+            f.writelines(text)
+        else:
+            f.writelines("http://"+text) 
         f.close()
 
     def favWebTurn(self):
