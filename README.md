@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-04-16 15:40:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-21 13:57:46
+ * @LastEditTime: 2020-04-21 15:36:30
  -->
 # WebBrowser-python-pyqt5-14
 
@@ -105,3 +105,13 @@ flask后端更新 template，主要是展示seaborn数据图
 ### 修改3
 
 添加历史记录以及地址栏自动补全功能，但是暂时没做到点击QCompleter之后的项能够跳转。参考的是 https://www.cnblogs.com/shiqi17/p/12176497.html
+
+### 修改4
+
+![Demo](./details/11.png)
+
+![Demo](./details/12.png)
+
+可以使用plt重新绘制（暂时只支持添加x,y轴label）图片
+
+TODO:感觉可以把这个做在网页端，添加n个可变参数。
