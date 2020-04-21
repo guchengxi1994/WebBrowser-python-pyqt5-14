@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 08:58:31
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-21 10:29:30
+@LastEditTime: 2020-04-21 10:46:44
 '''
 
 import numpy as np 
@@ -62,6 +62,7 @@ def plotFigure(path:str,sheetName:str,column:list=[],figure:str=""):
         if  os.path.exists(figurePath):
             os.remove(figurePath)
         plt.savefig(figurePath, bbox_inches='tight')
+        plt.clf()
         return figurePath
                 
     else:
@@ -72,8 +73,12 @@ def plotFigure(path:str,sheetName:str,column:list=[],figure:str=""):
             # print(filePath)
         figurePath = filePath + os.sep + 'static'+os.sep +"test.png"
             # plt.show()
+        if  os.path.exists(figurePath):
+            os.remove(figurePath)
         plt.savefig(figurePath, bbox_inches='tight')
+        plt.clf()
         return figurePath
+    
 
 
 
@@ -86,4 +91,5 @@ if __name__ == "__main__":
     path = "D:/testALg/WebBrowser-python-pyqt5-14/LocalWebTest/static/data.xls"
     # p = readColumn(path,'Sheet2')
     # print(p)
+    plotFigure(path,'Sheet1')
     plotFigure(path,'Sheet1')
