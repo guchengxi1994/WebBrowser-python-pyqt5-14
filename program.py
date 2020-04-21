@@ -5,11 +5,12 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-21 10:25:56
+@LastEditTime: 2020-04-21 13:52:05
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
-    QCheckBox,QVBoxLayout,QHBoxLayout,QLabel,QDialog,QPushButton,QMenu
+    QCheckBox,QVBoxLayout,QHBoxLayout,QLabel,QDialog,QPushButton,QMenu, \
+    QCompleter
 from PyQt5.QtGui import QIcon,QCursor
 from PyQt5.QtCore import Qt
 import sys,os,requests
@@ -20,6 +21,8 @@ from utils.checkParams import CheckColumn
 
 
 BASE_DIR = os.path.abspath(os.curdir)
+
+
 
 if os.path.exists(BASE_DIR + '/static/net.txt'):
     with open(BASE_DIR + '/static/net.txt', 'r', encoding='utf-8') as data:
@@ -38,7 +41,7 @@ def not_empty(s):
     """
     去除列表中None跟"", 参考：https://www.cnblogs.com/yspass/p/9434366.html
     """
-    return s and s.strip()
+    return s and s.strip() and s.replace("\n","") and s.replace("%0A","")
 
 
 favWebs = []
@@ -146,13 +149,31 @@ class UI(QMainWindow,):
         self.set_test_button.triggered.connect(self.test)
         #回车事件判断
         self.url_edit.returnPressed.connect(self.inputTurn)
+        #输入事件判断
+        # self.url_edit.textChanged.connect(self.showHistory)
+        self.showHistory()
 
-    
-    # def mousePressEvent(self,event):
-    #     # return super().mousePressEvent()
-    #     if event.buttons () == QtCore.Qt.RightButton:                        # 右键按下
-    #         # self.setText ("单击鼠标右键的事件: 自己定义")
-    #         print("单击鼠标右键")
+
+    def  showHistory(self): 
+        if os.path.exists(BASE_DIR + '/static/history.txt'):
+            with open(BASE_DIR + '/static/history.txt', 'r', encoding='utf-8') as data:
+                items_list = list(data)
+                items_list = list(set(items_list))
+                items_list = list(filter(not_empty,items_list))
+        else:
+            f = open(BASE_DIR + '/static/history.txt','w',encoding='utf-8')
+            f.write("https://www.bing.com\n")
+            f.close()
+            items_list = ["https://www.bing.com"]
+
+        self.completer = QCompleter(items_list)
+        self.completer.setFilterMode(Qt.MatchContains)
+        # 设置补全模式  有三种： QCompleter.PopupCompletion（默认）  QCompleter.InlineCompletion   QCompleter.UnfilteredPopupCompletion
+        self.completer.setCompletionMode(QCompleter.PopupCompletion)
+        # 给lineedit设置补全器
+        self.url_edit.setCompleter(self.completer)
+
+
 
 
 
@@ -160,11 +181,12 @@ class UI(QMainWindow,):
 
     def inputTurn(self):
         # print(self.url_edit.text())
-        s = self.url_edit.text()
+        s = self.url_edit.text().strip().replace("%0A","")
         if s.startswith("http://") or s.startswith("https://"):
             self.browser.setUrl(QtCore.QUrl( self.url_edit.text()))
         else:
             self.browser.setUrl(QtCore.QUrl( 'http://'+ self.url_edit.text()))
+        self.addHistory()
 
     
     def showDialog(self,options:list):
@@ -282,11 +304,18 @@ class UI(QMainWindow,):
         # print(self.sender().text())
         s = self.sender().text().replace("\n","")
         self.url_edit.setText(s)
-
+        self.addHistory()
         if s.startswith("http://") or s.startswith("https://"):
             self.browser.setUrl(QtCore.QUrl( self.url_edit.text()))
         else:
             self.browser.setUrl(QtCore.QUrl( 'http://'+ self.url_edit.text()))
+
+    
+    def addHistory(self):
+        f = open(BASE_DIR + '/static/history.txt','a',encoding='utf-8')
+        text = self.url_edit.text()
+        f.writelines(text+"\n")
+        f.close() 
 
 
 
@@ -381,6 +410,7 @@ class UI(QMainWindow,):
             self.browser.setUrl(QtCore.QUrl( self.urlline))
         else:
             self.browser.setUrl(QtCore.QUrl( "http://" +self.urlline))
+        self.addHistory()
 
 
     def NewPage(self,url=defaultUrl,label=''):

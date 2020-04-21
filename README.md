@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-04-16 15:40:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-21 11:01:32
+ * @LastEditTime: 2020-04-21 13:57:46
  -->
 # WebBrowser-python-pyqt5-14
 
@@ -101,3 +101,7 @@ flask后端更新 template，主要是展示seaborn数据图
 ![Demo](./details/421.gif)
 
 绘图前后端结合。屏幕录制的工具挺方便的 https://github.com/NickeManarin/ScreenToGif
+
+### 修改3
+
+添加历史记录以及地址栏自动补全功能，但是暂时没做到点击QCompleter之后的项能够跳转。参考的是 https://www.cnblogs.com/shiqi17/p/12176497.html
