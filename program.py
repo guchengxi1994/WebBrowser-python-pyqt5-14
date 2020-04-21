@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 17:34:49
+@LastEditTime: 2020-04-21 09:46:00
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -32,6 +32,30 @@ else:
     defaultUrl = "https://www.bing.com"
     f.write(defaultUrl)
     f.close()
+
+
+def not_empty(s):
+    """
+    去除列表中None跟"", 参考：https://www.cnblogs.com/yspass/p/9434366.html
+    """
+    return s and s.strip()
+
+
+favWebs = []
+if os.path.exists(BASE_DIR + '/static/storage.txt'):
+    with open(BASE_DIR + '/static/storage.txt', 'r', encoding='utf-8') as data:
+        # defaultUrl = data.readline()
+        favWebs = list(data)
+        favWebs = list(filter(not_empty,favWebs))
+        # print(defaultUrl)
+else:
+    # import pathlib
+    # pathlib.Path(BASE_DIR + '/static/net.txt').touch()
+    f = open(BASE_DIR + '/static/storage.txt','w',encoding='utf-8')
+    defaultUrl = "https://www.bing.com"
+    f.write(defaultUrl+'\n')
+    f.close()
+    favWebs.append('https://www.bing.com')
     
 
 
@@ -56,7 +80,7 @@ class UI(QMainWindow,):
         self.url_edit = QtWidgets.QLineEdit()
         self.cwd = BASE_DIR + "/LocalWebTest/static/"
 
-        # self.ps = []
+        self.favWebs = favWebs
         
         self.browser = QWebEngineView()
         # Url = 'https://www.baidu.com'
@@ -81,6 +105,7 @@ class UI(QMainWindow,):
         self.set_default_openPage_button = QAction(QIcon(BASE_DIR + '/static/imgs/lock.png'),'SetDefault',self)
         self.set_data_button = QAction(QIcon(BASE_DIR + '/static/imgs/data.png'),'AnalyzeData',self)
         self.set_test_button = QAction(QIcon(BASE_DIR + '/static/imgs/test.png'),'TestButton',self)
+        self.set_store_button = QAction(QIcon(BASE_DIR + '/static/imgs/storage.png'),'storage',self)
 
 
 
@@ -96,6 +121,7 @@ class UI(QMainWindow,):
         #DIY
         self.main_toolbar.addAction(self.set_default_openPage_button)
         self.main_toolbar.addAction(self.set_data_button)
+        self.main_toolbar.addAction(self.set_store_button)
         self.main_toolbar.addAction(self.set_test_button)
         
 
@@ -119,11 +145,11 @@ class UI(QMainWindow,):
         self.url_edit.returnPressed.connect(self.inputTurn)
 
     
-    def mousePressEvent(self,event):
-        # return super().mousePressEvent()
-        if event.buttons () == QtCore.Qt.RightButton:                        # 右键按下
-            # self.setText ("单击鼠标右键的事件: 自己定义")
-            print("单击鼠标右键")
+    # def mousePressEvent(self,event):
+    #     # return super().mousePressEvent()
+    #     if event.buttons () == QtCore.Qt.RightButton:                        # 右键按下
+    #         # self.setText ("单击鼠标右键的事件: 自己定义")
+    #         print("单击鼠标右键")
 
 
 
@@ -163,13 +189,25 @@ class UI(QMainWindow,):
 
 
     def test(self):
-        # import requests
-        url = 'http://localhost:5000/showImg'
-        # self.OpenUrlLine(url)
+        menu = QMenu()
+        vDict = locals()
+        s = len(self.favWebs)
+        if s>0:
+            for i in range(0,s):
+                vDict['x'+str(i)] = menu.addAction(self.favWebs[i])
+                vDict['x'+str(i)].triggered.connect(self.favWebTurn)
+
         
-        # data = {'imgName':'D:\\testALg\\WebBrowser-python-pyqt5-14\\LocalWebTest\\static\\test.png'}
-        img = '?imgName=D:\\testALg\\WebBrowser-python-pyqt5-14\\LocalWebTest\\static\\test.png'
-        self.browser.setUrl(QtCore.QUrl( url+img))
+        menu.exec_(QCursor.pos())
+        
+
+        """
+        ## 用来访问图片的代码，重要
+        # import requests
+        # url = 'http://localhost:5000/showImg'
+        # img = '?imgName=D:\\testALg\\WebBrowser-python-pyqt5-14\\LocalWebTest\\static\\test.png'
+        # self.browser.setUrl(QtCore.QUrl( url+img))
+        """
 
     
     def mousePressEvent(self,event):
@@ -210,7 +248,31 @@ class UI(QMainWindow,):
 
     def b4Clicked(self):
         # text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要修改的Y轴名：')
-        pass
+        # pass
+        # print(self.url_edit.text())
+        ss = set(self.favWebs)
+        ss.add(self.url_edit.text())
+        self.favWebs = list(ss)
+        f = open(BASE_DIR + '/static/storage.txt','w',encoding='utf-8')
+
+        for i in range(0,len(self.favWebs)):
+            f.write(self.favWebs[i]+"\n")
+        
+        f.close()
+
+    def favWebTurn(self):
+        # print(self.sender().text())
+        s = self.sender().text().replace("\n","")
+        self.url_edit.setText(s)
+
+        if s.startswith("http://") or s.startswith("https://"):
+            self.browser.setUrl(QtCore.QUrl( self.url_edit.text()))
+        else:
+            self.browser.setUrl(QtCore.QUrl( 'http://'+ self.url_edit.text()))
+
+
+
+        
 
         
 
