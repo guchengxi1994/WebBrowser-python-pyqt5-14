@@ -5,15 +5,38 @@
  * @Author: xiaoshuyui
  * @Date: 2020-04-20 11:25:17
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-20 12:40:28
+ * @LastEditTime: 2020-04-21 16:37:23
  -->
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Index</title>
+    <script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.js"></script>
 </head>
 <body>
+    <div name="imgNameDiv"><input id='imgName' type="text" value={{ imgName }} disabled=true style="width: 500pt;" /></div>
     <!-- <img src="{{ user_image }}" alt="User Image"> -->
-    <img src="data:image/png;base64,{{ user_image }}" alt="user_image"  id="imgslot"/>
+    <div>
+        <img src="data:image/png;base64,{{ user_image }}" alt="user_image"  name="imgslot"/>
+    </div>
+
+    <form action="" method="GET" autocomplete="on">
+        x轴: <input type="text" name="xstick" /><br />
+        y轴: <input type="text" name="ystick" /><br />
+        图例位置: <input type="text" name="figLoc" autocomplete="off" /><br />
+        <input type="submit"  />
+    </form>
+    <button id='btn' onclick="aa()">TEST</button>
+    
 </body>
+
+<script>
+    function aa(){
+        // var bb = document.getElementsByName("imgNameDiv");
+        // window.alert($(".imgslot").text());
+        window.alert($("#imgName").val());
+    }
+
+</script>
 </html>

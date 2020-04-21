@@ -5,11 +5,12 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 08:29:09
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-20 16:15:09
+@LastEditTime: 2020-04-21 16:02:15
 '''
 from flask import Flask, request,render_template
 from flask_cors import CORS,cross_origin
 import json
+import os
 
 # app = Flask(__name__)
 
@@ -28,18 +29,22 @@ def showImage():
     try:
         # imgName = json.loads(request.get_data())['imgname']
         imgName = request.args.get("imgName")
-        print(imgName)
+        # print(imgName)
+        if os.path.exists(imgName):
+            pass
+        else:
+            raise FileNotFoundError('文件不存在')
 
     except Exception:
         imgName = "D:\\testALg\\WebBrowser-python-pyqt5-14\\LocalWebTest\\static\\test1.png"
     
-    print(imgName)
+    # print(imgName)
     
     with open(imgName,'rb') as f:
             # new_image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
         base64_data = base64.b64encode(f.read()).decode("utf-8")
         # imgName = "./static/test.png"
-        return render_template("index.html", user_image = base64_data)
+        return render_template("index.html", user_image = base64_data,imgName = imgName)
     
 
 # 主程序入口
