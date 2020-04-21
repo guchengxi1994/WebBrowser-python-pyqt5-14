@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-21 13:52:05
+@LastEditTime: 2020-04-21 15:33:26
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -149,9 +149,15 @@ class UI(QMainWindow,):
         self.set_test_button.triggered.connect(self.test)
         #回车事件判断
         self.url_edit.returnPressed.connect(self.inputTurn)
-        #输入事件判断
-        # self.url_edit.textChanged.connect(self.showHistory)
+        #显示访问记录
         self.showHistory()
+
+        self.xstick = ''
+        self.ystick = ''
+        self.dataPath = ''
+        self.sheetName = ''
+        self.formType = ''
+        self.columns = []
 
 
     def  showHistory(self): 
@@ -253,12 +259,14 @@ class UI(QMainWindow,):
 
                 menu = QMenu()
                 b1 = menu.addAction("修改X轴名")
-                b2 = menu.addAction("修改Y轴名")
+                b2 = menu.addAction("修改Y轴名")               
+                bchange = menu.addAction("重新绘制图形")
                 b3 = menu.addAction("关于...")
 
                 b3.triggered.connect(self.b3Clicked)
                 b1.triggered.connect(self.b1Clicked)
                 b2.triggered.connect(self.b2Clicked)
+                bchange.triggered.connect(self.bChangeClicked)
                 menu.exec_(QCursor.pos())
             
             else:
@@ -270,16 +278,40 @@ class UI(QMainWindow,):
                 b5.triggered.connect(self.b5Clicked)
                 menu.exec_(QCursor.pos())
 
-    
+    def bChangeClicked(self):
+        if "" == self.xstick and "" == self.ystick:
+            pass
+        else:
+            # print(self.xstick)
+            # print(self.ystick)
+            figurePath = plotFigureWithLabels(self.dataPath,self.sheetName,self.columns,\
+                self.formType,xstick=self.xstick,ystick=self.ystick)
+            from utils.webTest import check_aliveness
+            result = check_aliveness('127.0.0.1',5000)
+            if result:
+                import requests
+                url = 'http://localhost:5000/showImg'
+                img = '?imgName='+figurePath
+                self.browser.setUrl(QtCore.QUrl( url+img))
+            else:
+                QMessageBox.warning(self, "警告对话框", "服务器未启动", QMessageBox.Yes )
+
 
     def b3Clicked(self):
         QMessageBox.information(self, "提示：", '   作者很帅')
 
     def b1Clicked(self):
         text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要修改的X轴名：')
+        if ok:
+            if text!='':
+                self.xstick = text
+
 
     def b2Clicked(self):
         text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入需要修改的Y轴名：')
+        if ok:
+            if text!='':
+                self.ystick = text
 
     def b4Clicked(self):
         ss = set(self.favWebs)
@@ -359,8 +391,12 @@ class UI(QMainWindow,):
         
         ps = list(set(ps))
         # print(ps)
-        print(ps)
+
         if len(ps)>0 :
+            self.dataPath = fileName_choose
+            self.sheetName = sheetName
+            self.formType = formType
+            self.columns = ps
             figurePath = plotFigure(fileName_choose,sheetName,ps,formType)
 
             from utils.webTest import check_aliveness
@@ -373,9 +409,6 @@ class UI(QMainWindow,):
             else:
                 QMessageBox.warning(self, "警告对话框", "服务器未启动", QMessageBox.Yes )
             
-
-        
-
 
 
     def defaultPage(self):
