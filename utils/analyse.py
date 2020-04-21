@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-17 08:58:31
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-21 10:46:44
+@LastEditTime: 2020-04-21 10:47:38
 '''
 
 import numpy as np 
@@ -62,6 +62,7 @@ def plotFigure(path:str,sheetName:str,column:list=[],figure:str=""):
         if  os.path.exists(figurePath):
             os.remove(figurePath)
         plt.savefig(figurePath, bbox_inches='tight')
+        # 参考 https://www.cnblogs.com/luoheng23/p/11050347.html
         plt.clf()
         return figurePath
                 

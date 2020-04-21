@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-04-16 15:40:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-20 14:19:47
+ * @LastEditTime: 2020-04-21 11:01:32
  -->
 # WebBrowser-python-pyqt5-14
 
@@ -89,3 +89,15 @@ flask后端更新 template，主要是展示seaborn数据图
 ### 修改5
 
 地址栏支持回车访问啦啦啦啦啦~~~嗯，这很关键，之后会考虑编写右键事件——如果支持的话。
+
+## 2020.4.21 修改说明
+
+### 修改1
+
+支持右键弹出QMenu，不好截图。
+
+### 修改2
+
+![Demo](./details/421.gif)
+
+绘图前后端结合。屏幕录制的工具挺方便的 https://github.com/NickeManarin/ScreenToGif
