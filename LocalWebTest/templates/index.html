@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-04-20 11:25:17
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-21 16:53:42
+ * @LastEditTime: 2020-04-22 10:47:18
  -->
 
 <!DOCTYPE html>
@@ -15,18 +15,21 @@
     <script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.js"></script>
 </head>
 <body>
-    <div name="imgNameDiv"><input id='imgName' type="text" value={{ imgName }} disabled=true style="width: 500pt;" /></div>
+    
     <!-- <img src="{{ user_image }}" alt="User Image"> -->
     <div>
         <img src="data:image/png;base64,{{ user_image }}" alt="user_image"  id="imgslot"/>
     </div>
 
-    <form action="" method="GET" autocomplete="on">
+
+        ImgPath: <input id="imgName" name="imgName" type="text" value={{ imgName }} disabled=true style="width: 500pt;" /><br />
+        DataPath: <input id="dataPath" name="dataPath" type="text" value={{ dataPath }} disabled=true style="width: 500pt;" /><br />
+        SheetName: <input id="sheetName" name="sheetName" type="text" value={{ sheetName }} disabled=true style="width: 500pt;" /><br />
         x轴: <input type="text" name="xstick" id="xstick" /><br />
         y轴: <input type="text" name="ystick" id="ystick" /><br />
-        图例位置: <input type="text" name="figLoc" id="figLoc" autocomplete="off" /><br />
-        <input type="submit"  />
-    </form>
+        图例位置: <input type="text" name="figLoc" id="figLoc" /><br />
+        <button id='change' onclick="change()">change</button>
+ 
     <button id='btn' onclick="aa()">TEST</button>
     
 </body>
@@ -35,8 +38,52 @@
     function aa(){
         // var bb = document.getElementsByName("imgNameDiv");
         // window.alert($(".imgslot").text());
-        window.alert($("#imgName").val());
+        // window.alert($('#form1').serialize());
+        var obj = {};
+        obj["imgName"] = $("#imgName").val();
+        obj["dataPath"] = $("#dataPath").val();
+        obj["sheetName"] = $("#sheetName").val();
+        obj["xstick"] = $("#xstick").val();
+        obj["ystick"] = $("#ystick").val();
+        obj["figLoc"] = $("#figLoc").val();
+
+        var json = JSON.stringify(obj);
+        window.alert(json);
         $("#imgslot").attr('src',"https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2820255210,1537678094&fm=15&gp=0.jpg")
+    }
+
+    function change(){
+        var obj = {};
+        obj["imgName"] = $("#imgName").val();
+        obj["xstick"] = $("#xstick").val();
+        obj["ystick"] = $("#ystick").val();
+        obj["figLoc"] = $("#figLoc").val();
+        obj['dataPath'] = $("#dataPath").val();
+        obj["sheetName"] = $("#sheetName").val();
+
+        var temp = JSON.stringify(obj);
+        // window.alert(temp);
+        
+        $.ajax(
+            {
+                type:"POST",
+                dataType:"json",
+                url:"http://localhost:5000/changeImg",
+                data:temp,
+                success: function(result){
+                    // console.log(result);
+                    if (result.resultCode==200){
+                        window.alert("SUCCESS");
+                        $("#imgslot").attr('src',"data:image/png;base64,"+result.figureData);
+                        $("#imgName").attr('val',result.figurePath);
+                    }
+                    ;
+                },
+                error:function(){
+                    window.alert("ERROR");
+                }
+            }
+        );
     }
 
 </script>

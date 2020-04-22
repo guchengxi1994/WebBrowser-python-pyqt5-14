@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-21 15:33:26
+@LastEditTime: 2020-04-22 10:21:44
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -291,7 +291,7 @@ class UI(QMainWindow,):
             if result:
                 import requests
                 url = 'http://localhost:5000/showImg'
-                img = '?imgName='+figurePath
+                img = '?imgName='+figurePath+"&dataPath="+self.dataPath+"&sheetName="+self.sheetName
                 self.browser.setUrl(QtCore.QUrl( url+img))
             else:
                 QMessageBox.warning(self, "警告对话框", "服务器未启动", QMessageBox.Yes )

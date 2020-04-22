@@ -1,11 +1,11 @@
 <!--
- * @lanhuage: python
+ * @lanhuage: markdown
  * @Descripttion: 
- * @version: beta
+ * @version: nil
  * @Author: xiaoshuyui
  * @Date: 2020-04-16 15:40:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-21 15:36:30
+ * @LastEditTime: 2020-04-22 10:51:49
  -->
 # WebBrowser-python-pyqt5-14
 
@@ -115,3 +115,16 @@ flask后端更新 template，主要是展示seaborn数据图
 可以使用plt重新绘制（暂时只支持添加x,y轴label）图片
 
 TODO:感觉可以把这个做在网页端，添加n个可变参数。
+
+
+## 2020.4.22 修改说明
+
+### 修改1
+
+网页端可以直接修改图标内容展示。费了老大劲改了个CORS的bug。
+
+![Demo](./details/13.png)
+
+![Demo](./details/14.png)
+
+中文有乱码是我始料未及的。
