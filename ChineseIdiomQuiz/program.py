@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-24 15:16:31
+@LastEditTime: 2020-04-24 15:29:46
 '''
 import os
 import sys
@@ -18,6 +18,7 @@ from PyQt5.QtGui import QIcon,QPainter,QPen,QFont
 from PyQt5.QtCore import QRect,Qt,QThread
 import numpy as np
 from utils.extract2 import IdiomPinyinMeaning
+import random
 
 
 BASE_DIR = os.path.abspath(os.curdir)
@@ -43,6 +44,10 @@ class MainForm(QMainWindow):
 
         self.pause_button = QAction(QIcon(BASE_DIR + '/static/time.png'),'Pause Quiz',self)
         self.main_toolbar.addAction(self.pause_button)
+
+        self.next_button = QAction(QIcon(BASE_DIR + '/static/next.png'),'Next Quiz',self)
+        self.main_toolbar.addAction(self.next_button)
+        self.next_button.triggered.connect(self.next_quiz)
 
         self.timeRecord = QLabel('0',self)
         self.timeRecord.move(385,100)
@@ -119,10 +124,14 @@ class MainForm(QMainWindow):
         pb = ProBar()
         pb.raise_()
         pb.exec_()
-        # self.mt.start()
-        
-        # mt = MyThread()
-        # mt.run()
+
+    def next_quiz(self):
+        ind = random.randint(0,len(self.idioms)-1)
+        self.thisQuiz = self.idioms[ind]
+        self.quizEdit.setText(self.thisQuiz.idiom)
+        # print(self.idioms[0])
+        self.pinyinLabel.setText('拼音：'+self.thisQuiz.pinyin)
+        self.quizMeaningText.setText("")
 
     def readTxt(self):
         # pass
@@ -130,7 +139,7 @@ class MainForm(QMainWindow):
         self.thisQuiz = self.idioms[0]
         self.quizEdit.setText(self.thisQuiz.idiom)
         # print(self.idioms[0])
-        self.pinyinLabel.setText('拼音：'+self.idioms[0].pinyin)
+        self.pinyinLabel.setText('拼音：'+self.thisQuiz.pinyin)
         
     def showMeaning(self):
         # print("aaaaaa")
