@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-24 14:59:24
+@LastEditTime: 2020-04-24 15:16:31
 '''
 import os
 import sys
@@ -48,6 +48,7 @@ class MainForm(QMainWindow):
         self.timeRecord.move(385,100)
 
         self.idioms = []
+        self.thisQuiz = IdiomPinyinMeaning("","","")
 
         font1 = QtGui.QFont() 
         #字体
@@ -64,11 +65,16 @@ class MainForm(QMainWindow):
         # self.timeRecord.isVisible(False)
 
         self.quizLabel = QLabel('出题：',self)
+        self.pinyinLabel = QLabel('拼音：',self)
 
 
         self.quizLabel.move(100,200)
+        self.pinyinLabel.move(100,235)
+        self.pinyinLabel.setFixedWidth(200)
+
         self.quizEdit = QLineEdit(self)
         self.quizEdit.move(150,200)
+        
         self.quizEdit.setReadOnly(True)
         self.quizEdit.setText("test")
 
@@ -81,7 +87,7 @@ class MainForm(QMainWindow):
 
 
         self.quizMeaningText = QTextEdit(self)
-        self.quizMeaningText.move(100,235)
+        self.quizMeaningText.move(100,275)
         self.quizMeaningText.setFixedWidth(150)
         self.quizMeaningText.setReadOnly(True)
 
@@ -121,11 +127,15 @@ class MainForm(QMainWindow):
     def readTxt(self):
         # pass
         self.idioms = np.load(idiomPath,allow_pickle=True)
-        print(self.idioms[0])
+        self.thisQuiz = self.idioms[0]
+        self.quizEdit.setText(self.thisQuiz.idiom)
+        # print(self.idioms[0])
+        self.pinyinLabel.setText('拼音：'+self.idioms[0].pinyin)
         
     def showMeaning(self):
         # print("aaaaaa")
-        print("aaaaa")
+        # print("aaaaa")
+        self.quizMeaningText.setText(self.thisQuiz.meaning)
     
     def start_game(self):
         from utils.gameMode import MyDialog_GameMode_chosen
