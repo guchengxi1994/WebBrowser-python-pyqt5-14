@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-24 10:25:39
+@LastEditTime: 2020-04-24 14:59:24
 '''
 import os
 import sys
@@ -16,23 +16,13 @@ from PyQt5.QtWidgets import QMainWindow,\
 
 from PyQt5.QtGui import QIcon,QPainter,QPen,QFont
 from PyQt5.QtCore import QRect,Qt,QThread
+import numpy as np
+from utils.extract2 import IdiomPinyinMeaning
 
 
 BASE_DIR = os.path.abspath(os.curdir)
 
-idiomPath = BASE_DIR + "/static/words.txt"
-
-
-class MyThread(QThread):
-    def __init__(self):
-        super(MyThread,self).__init__()
-
-    def run(self):
-        from utils.loading import ProBar
-        pb = ProBar()
-        pb.raise_()
-        pb.exec_()
-
+idiomPath = BASE_DIR + "/static/idioms.npy"
 
 
 
@@ -57,6 +47,8 @@ class MainForm(QMainWindow):
         self.timeRecord = QLabel('0',self)
         self.timeRecord.move(385,100)
 
+        self.idioms = []
+
         font1 = QtGui.QFont() 
         #字体
         font1.setFamily('微软雅黑')
@@ -73,7 +65,6 @@ class MainForm(QMainWindow):
 
         self.quizLabel = QLabel('出题：',self)
 
-        self.mt = MyThread()
 
         self.quizLabel.move(100,200)
         self.quizEdit = QLineEdit(self)
@@ -95,6 +86,8 @@ class MainForm(QMainWindow):
         self.quizMeaningText.setReadOnly(True)
 
         self.showLoading()
+        self.readTxt()
+
         # self.quizEdit.setStyleSheet("background:transparent;border-width:0;border-style:outset")
         # self.quizEditAction = QAction(self)
         # self.quizEditAction.setIcon(QIcon("/static/meaning.png"))
@@ -116,12 +109,19 @@ class MainForm(QMainWindow):
         # self.rb3.move(50,300)
 
     def showLoading(self):
-        self.mt.start()
+        from utils.loading import ProBar
+        pb = ProBar()
+        pb.raise_()
+        pb.exec_()
+        # self.mt.start()
+        
         # mt = MyThread()
         # mt.run()
 
     def readTxt(self):
-        pass
+        # pass
+        self.idioms = np.load(idiomPath,allow_pickle=True)
+        print(self.idioms[0])
         
     def showMeaning(self):
         # print("aaaaaa")
