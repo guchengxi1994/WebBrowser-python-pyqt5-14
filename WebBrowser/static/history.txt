@@ -1,3 +1,6 @@
 http://localhost:5000/
 http://localhost:5000/
 http://www.baidu.comhttp://www.baidu.com
+http://www.bing.com
+http://www.google.com
+http://www.bing.com

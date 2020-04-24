@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-16 15:40:21
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-22 10:21:44
+@LastEditTime: 2020-04-24 10:58:00
 '''
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,QApplication,QAction,QFileDialog,QInputDialog,QMessageBox, \
@@ -81,7 +81,8 @@ class UI(QMainWindow,):
 
         self.tabs.setLayout(self.tabs_layout)
         self.url_edit = QtWidgets.QLineEdit()
-        self.cwd = BASE_DIR + "/LocalWebTest/static/"
+        self.cwd = os.path.pardir + "/LocalWebTest/static/"
+
 
         self.favWebs = favWebs
         
