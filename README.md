@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-04-16 15:40:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-24 10:51:55
+ * @LastEditTime: 2020-04-24 11:12:52
  -->
 # WebBrowser-python-pyqt5-14
 
@@ -132,6 +132,9 @@ TODO:感觉可以把这个做在网页端，添加n个可变参数。
 ## 2020.4.24 修改说明
 
 主要是增加了一个成语接龙的pyqt尝试项目，所以重新整理了文件夹。
+
 ==> ChineseIdiomQuiz 成语接龙
+
 ==> WebBrowser       浏览器
+
 ==> LocalWebTest     web服务器
