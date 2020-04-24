@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-24 09:38:05
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-24 10:10:58
+@LastEditTime: 2020-04-24 10:20:35
 '''
 
 from PyQt5.QtCore import Qt, QTimer
@@ -17,7 +17,8 @@ class ProBar(QDialog):
     def __init__(self):
         super(ProBar,self).__init__()
         self.setFixedWidth(200)
-        self.setWindowFlags(Qt.FramelessWindowHint)
+        # self.setWindowFlags(Qt.FramelessWindowHint)
+        # self.backgroundRole()
         self.progressbar = QProgressBar(self)                   # 1
         # self.progressbar.setOrientation(Qt.AlignCenter)          
         self.progressbar.setMinimum(0)                          # 2

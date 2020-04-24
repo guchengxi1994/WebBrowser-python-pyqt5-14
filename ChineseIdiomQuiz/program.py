@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-24 09:57:08
+@LastEditTime: 2020-04-24 10:25:39
 '''
 import os
 import sys
@@ -15,12 +15,26 @@ from PyQt5.QtWidgets import QMainWindow,\
     QLineEdit,QPushButton,QTextEdit
 
 from PyQt5.QtGui import QIcon,QPainter,QPen,QFont
-from PyQt5.QtCore import QRect,Qt
+from PyQt5.QtCore import QRect,Qt,QThread
 
 
 BASE_DIR = os.path.abspath(os.curdir)
 
 idiomPath = BASE_DIR + "/static/words.txt"
+
+
+class MyThread(QThread):
+    def __init__(self):
+        super(MyThread,self).__init__()
+
+    def run(self):
+        from utils.loading import ProBar
+        pb = ProBar()
+        pb.raise_()
+        pb.exec_()
+
+
+
 
 class MainForm(QMainWindow):
     def __init__(self):
@@ -58,6 +72,8 @@ class MainForm(QMainWindow):
         # self.timeRecord.isVisible(False)
 
         self.quizLabel = QLabel('出题：',self)
+
+        self.mt = MyThread()
 
         self.quizLabel.move(100,200)
         self.quizEdit = QLineEdit(self)
@@ -100,10 +116,12 @@ class MainForm(QMainWindow):
         # self.rb3.move(50,300)
 
     def showLoading(self):
-        from utils.loading import ProBar
-        pb = ProBar()
-        pb.raise_()
-        pb.exec_()
+        self.mt.start()
+        # mt = MyThread()
+        # mt.run()
+
+    def readTxt(self):
+        pass
         
     def showMeaning(self):
         # print("aaaaaa")
