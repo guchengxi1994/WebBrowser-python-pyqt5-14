@@ -6,16 +6,19 @@
 @Author: xiaoshuyui
 @Date: 2020-04-24 14:06:30
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-24 14:53:34
+@LastEditTime: 2020-04-26 11:04:47
 '''
 
 import numpy as np
+from pypinyin import lazy_pinyin
 
 class IdiomPinyinMeaning(object):
-    def __init__(self,idiom,pinyin,meaning):
+    def __init__(self,idiom,pinyin,meaning,start,end):
         self.idiom = idiom
         self.pinyin = pinyin
         self.meaning = meaning
+        self.start = start
+        self.end = end
     
     def __str__(self):
         return self.idiom+self.pinyin+self.meaning
@@ -54,7 +57,12 @@ if __name__ == "__main__":
                 ttmp = tmp[1]
                 tttmp = ttmp.split("释义：")
 
-                aa = IdiomPinyinMeaning(tmp[0],tttmp[0],tttmp[1])
+                ii = lazy_pinyin(tmp[0].strip())
+                start = ii[0]
+                end = ii[-1]
+
+
+                aa = IdiomPinyinMeaning(tmp[0],tttmp[0],tttmp[1],start,end)
                 ll.add(aa)
 
     # print(len(list(ll)))

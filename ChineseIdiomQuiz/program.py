@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-26 09:48:07
+@LastEditTime: 2020-04-26 11:19:21
 '''
 import os
 import sys
@@ -20,6 +20,8 @@ import numpy as np
 from utils.extract2 import IdiomPinyinMeaning
 import random
 import datetime
+from pypinyin import lazy_pinyin,pinyin
+from utils.easyMode import iterator2list
 
 
 BASE_DIR = os.path.abspath(os.curdir)
@@ -57,7 +59,7 @@ class MainForm(QMainWindow):
         self.gameModeChosen = ''
 
         self.idioms = []
-        self.thisQuiz = IdiomPinyinMeaning("","","")
+        self.thisQuiz = IdiomPinyinMeaning("","","","","")
         
 
         self.totalNumNumber = 0
@@ -107,6 +109,25 @@ class MainForm(QMainWindow):
         self.quizShowMeaningButton.setToolTip("Show Idiom Meaning")
 
 
+
+
+        self.resultLabel = QLabel('回答：',self)
+        self.resultLabel.move(100,400)
+
+        # self.resultEdit.setReadOnly(True)
+        self.resultEdit = QLineEdit(self)
+        self.resultEdit.setText("")
+        self.resultEdit.move(150,400)
+
+        self.resultButton = QPushButton(self)
+        self.resultButton.move(250,400)
+        self.resultButton.setFixedSize(31,31)
+        self.resultButton.setStyleSheet("QPushButton{border-image: url(./static/tijiao.png)}")
+        self.resultButton.clicked.connect(self.tijiao)
+        self.resultButton.setToolTip("Next")
+
+
+
         self.quizMeaningText = QTextEdit(self)
         self.quizMeaningText.move(100,275)
         self.quizMeaningText.setFixedWidth(150)
@@ -118,6 +139,41 @@ class MainForm(QMainWindow):
         self.timer = QTimer()
         self.step = 0
 
+    
+    def tijiao(self):
+        
+        quiz = self.quizEdit.text()
+        res = self.resultEdit.text()
+        # print(res)
+        self.resultEdit.setText("")
+        quiz_list = lazy_pinyin(quiz.strip())
+        res_list = lazy_pinyin(res.strip())
+        self.totalNumNumber += 1
+        
+
+        # print(quiz_list)
+        # print(res_list)
+        if res.strip()!= "":
+            if quiz_list[-1] == res_list[0]:
+                
+                s = filter(lambda x:x.idiom.strip() == res.strip(),self.idioms)
+                
+                if len(list(s))>0:
+                    # print(True)
+                    self.correctNumNumber += 1
+                    self.next_quiz_end(res_list[-1])
+                else:
+                    self.next_quiz()
+            else:
+                self.next_quiz()
+        else:
+            self.next_quiz()
+        
+        self.totalNum.setText('总数： '+str(self.totalNumNumber))
+        self.correctNum.setText('准确数量： '+str(self.correctNumNumber))
+        # print(self.totalNumNumber)
+        # print(self.correctNumNumber)
+
 
 
 
@@ -127,6 +183,7 @@ class MainForm(QMainWindow):
         pb = ProBar()
         pb.raise_()
         pb.exec_()
+    
 
     def next_quiz(self):
         ind = random.randint(0,len(self.idioms)-1)
@@ -136,13 +193,32 @@ class MainForm(QMainWindow):
         self.pinyinLabel.setText('拼音：'+self.thisQuiz.pinyin)
         self.quizMeaningText.setText("")
 
+    def next_quiz_end(self,end:str):
+        # pass
+        s = filter(lambda x:x.start.strip() == end.strip(),self.idioms)
+
+        res = iterator2list(s)
+
+        if len(res)>0:
+
+            ind = random.randint(0,len(res)-1)
+            self.thisQuiz = res[ind]
+            self.quizEdit.setText(res[ind].idiom)
+            # print(self.idioms[0])
+            self.pinyinLabel.setText('拼音：'+res[ind].pinyin)
+            self.quizMeaningText.setText("")
+        else:
+            self.next_quiz()
+      
+
     def readTxt(self):
         # pass
         self.idioms = np.load(idiomPath,allow_pickle=True)
-        self.thisQuiz = self.idioms[0]
-        self.quizEdit.setText(self.thisQuiz.idiom)
-        # print(self.idioms[0])
-        self.pinyinLabel.setText('拼音：'+self.thisQuiz.pinyin)
+        self.next_quiz()
+        # self.thisQuiz = self.idioms[0]
+        # self.quizEdit.setText(self.thisQuiz.idiom)
+        # # print(self.idioms[0])
+        # self.pinyinLabel.setText('拼音：'+self.thisQuiz.pinyin)
         
     def showMeaning(self):
         # print(self.quizMeaningText.toPlainText())
