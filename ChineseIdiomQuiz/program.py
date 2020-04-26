@@ -5,14 +5,14 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-26 09:17:28
+@LastEditTime: 2020-04-26 09:48:07
 '''
 import os
 import sys
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,\
     QApplication,QAction,QRadioButton,QLabel, \
-    QLineEdit,QPushButton,QTextEdit
+    QLineEdit,QPushButton,QTextEdit,QInputDialog
 
 from PyQt5.QtGui import QIcon,QPainter,QPen,QFont
 from PyQt5.QtCore import QRect,Qt,QThread,QTimer
@@ -54,8 +54,22 @@ class MainForm(QMainWindow):
         self.timeRecord.move(325,100)
         self.timeRecord.setFixedWidth(500)
 
+        self.gameModeChosen = ''
+
         self.idioms = []
         self.thisQuiz = IdiomPinyinMeaning("","","")
+        
+
+        self.totalNumNumber = 0
+        self.totalNum = QLabel('总数： '+str(self.totalNumNumber),self)
+        self.totalNum.move(575,100) 
+
+
+        self.correctNumNumber = 0
+        self.correctNum = QLabel('准确数量： '+str(self.correctNumNumber),self)
+        self.correctNum.move(575,200) 
+        
+
 
         font1 = QtGui.QFont() 
         #字体
@@ -151,6 +165,7 @@ class MainForm(QMainWindow):
         result = dialog_gameType.exec_()
         # print(dialog_gameType.info1)
         if dialog_gameType.info1.startswith("Mode1"):
+            self.gameModeChosen = "Mode1"
             # pass
             bt = BackTime()
             bt.raise_()
@@ -162,22 +177,27 @@ class MainForm(QMainWindow):
             #     self.start_game()
 
         elif dialog_gameType.info1.startswith("Mode2"):
+            self.gameModeChosen = "Mode2"
+            text, ok=QInputDialog.getText(self, 'Text Input Dialog', '输入时间：')
+            if ok:
+                if "" == text or text is None:
+                    pass
+                else:
+                    # from utils.strISnumber import is_number 
+                    i = -1                
+                    if text.isdigit():
+                        # import unicodedata
+                        i = int(text)
+                        
+                    self.timeRecord.setText("Remaining Time: "+str(i))
+                        
             self.timeRecord.setVisible(True)
             # pass
         else:
             self.timeRecord.setVisible(False)
-            pass
+            # pass
+            self.gameModeChosen = "Mode3"
 
-
-    # def paintEvent(self):
-    #     # super().paintEvent(event)
-    #     painter = QPainter()
-    #     painter.begin(self)
-    #     rect = QRect(20,20,500,200)
-    #     painter.setPen(QPen(Qt.red,2,Qt.SolidLine))
-    #     painter.drawRect(rect)
-    #     painter.end()
-        # return super().paintEvent()
 
 
         
