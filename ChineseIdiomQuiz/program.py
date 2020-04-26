@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-24 15:29:46
+@LastEditTime: 2020-04-26 09:17:28
 '''
 import os
 import sys
@@ -15,10 +15,11 @@ from PyQt5.QtWidgets import QMainWindow,\
     QLineEdit,QPushButton,QTextEdit
 
 from PyQt5.QtGui import QIcon,QPainter,QPen,QFont
-from PyQt5.QtCore import QRect,Qt,QThread
+from PyQt5.QtCore import QRect,Qt,QThread,QTimer
 import numpy as np
 from utils.extract2 import IdiomPinyinMeaning
 import random
+import datetime
 
 
 BASE_DIR = os.path.abspath(os.curdir)
@@ -49,8 +50,9 @@ class MainForm(QMainWindow):
         self.main_toolbar.addAction(self.next_button)
         self.next_button.triggered.connect(self.next_quiz)
 
-        self.timeRecord = QLabel('0',self)
-        self.timeRecord.move(385,100)
+        self.timeRecord = QLabel('',self)
+        self.timeRecord.move(325,100)
+        self.timeRecord.setFixedWidth(500)
 
         self.idioms = []
         self.thisQuiz = IdiomPinyinMeaning("","","")
@@ -99,25 +101,12 @@ class MainForm(QMainWindow):
         self.showLoading()
         self.readTxt()
 
-        # self.quizEdit.setStyleSheet("background:transparent;border-width:0;border-style:outset")
-        # self.quizEditAction = QAction(self)
-        # self.quizEditAction.setIcon(QIcon("/static/meaning.png"))
-        # self.quizEditAction.triggered.connect(self.showMeaning)
-        
-
-        # self.quizEdit.addAction(quizEditAction,QLineEdit.TrailingPosition)
-
-        
+        self.timer = QTimer()
+        self.step = 0
 
 
-        #选项
-        # self.rb1 = QRadioButton('Mode1--计时',self)
-        # self.rb2 = QRadioButton('Mode2--倒计时',self)
-        # self.rb3 = QRadioButton('Mode3--无计时',self)
 
-        # self.rb1.move(50,100)
-        # self.rb2.move(50,200)
-        # self.rb3.move(50,300)
+
 
     def showLoading(self):
         from utils.loading import ProBar
@@ -142,19 +131,36 @@ class MainForm(QMainWindow):
         self.pinyinLabel.setText('拼音：'+self.thisQuiz.pinyin)
         
     def showMeaning(self):
-        # print("aaaaaa")
-        # print("aaaaa")
-        self.quizMeaningText.setText(self.thisQuiz.meaning)
+        # print(self.quizMeaningText.toPlainText())
+        if len(self.quizMeaningText.toPlainText()) < 5:
+            self.quizMeaningText.setText(self.thisQuiz.meaning)
+        else:
+            self.quizMeaningText.setText("")
+
+    def startRecordTime(self):
+        # self.timer.start(1000)
+        self.step += 1
+        
+        self.timeRecord.setText("Cost Time: "+str(datetime.timedelta(seconds=self.step)))
     
     def start_game(self):
         from utils.gameMode import MyDialog_GameMode_chosen
+        from utils.backtime import BackTime
 
         dialog_gameType = MyDialog_GameMode_chosen()
         result = dialog_gameType.exec_()
         # print(dialog_gameType.info1)
         if dialog_gameType.info1.startswith("Mode1"):
             # pass
+            bt = BackTime()
+            bt.raise_()
+            bt.exec_()
             self.timeRecord.setVisible(True)
+            self.timer.start(1000)
+            self.timer.timeout.connect(self.startRecordTime)
+            # if self.timer.isActive():                
+            #     self.start_game()
+
         elif dialog_gameType.info1.startswith("Mode2"):
             self.timeRecord.setVisible(True)
             # pass
