@@ -6,7 +6,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-24 14:06:30
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-26 11:04:47
+@LastEditTime: 2020-04-26 16:13:42
 '''
 
 import numpy as np
@@ -30,7 +30,7 @@ class IdiomPinyinMeaning(object):
         if isinstance(other,self.__class__):
             return False
         else:
-            return self.idiom == other.idiom and self.meaning == other.meaning and self.pinyin == self.pinyin
+            return self.idiom == other.idiom 
 
 if __name__ == "__main__":
     #test
