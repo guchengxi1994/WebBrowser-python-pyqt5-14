@@ -5,14 +5,15 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-26 11:19:21
+@LastEditTime: 2020-04-26 17:42:42
 '''
 import os
 import sys
 from PyQt5 import QtWidgets,QtCore,QtGui
 from PyQt5.QtWidgets import QMainWindow,\
     QApplication,QAction,QRadioButton,QLabel, \
-    QLineEdit,QPushButton,QTextEdit,QInputDialog
+    QLineEdit,QPushButton,QTextEdit,QInputDialog, \
+    QWidget,QSizePolicy
 
 from PyQt5.QtGui import QIcon,QPainter,QPen,QFont
 from PyQt5.QtCore import QRect,Qt,QThread,QTimer
@@ -51,6 +52,18 @@ class MainForm(QMainWindow):
         self.next_button = QAction(QIcon(BASE_DIR + '/static/next.png'),'Next Quiz',self)
         self.main_toolbar.addAction(self.next_button)
         self.next_button.triggered.connect(self.next_quiz)
+
+        #用户
+        self.user_button = QAction(QIcon(BASE_DIR + '/static/user.png'),'User Info',self)
+        
+
+        spacer = QWidget()
+        spacer.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
+        self.main_toolbar.addWidget(spacer)
+        self.main_toolbar.addAction(self.user_button)
+
+
+
 
         self.timeRecord = QLabel('',self)
         self.timeRecord.move(325,100)
@@ -141,7 +154,7 @@ class MainForm(QMainWindow):
 
     
     def tijiao(self):
-        
+
         quiz = self.quizEdit.text()
         res = self.resultEdit.text()
         # print(res)
@@ -168,11 +181,11 @@ class MainForm(QMainWindow):
                 self.next_quiz()
         else:
             self.next_quiz()
-        
+
+        # if self.next_button.isEnable() == False: 
         self.totalNum.setText('总数： '+str(self.totalNumNumber))
         self.correctNum.setText('准确数量： '+str(self.correctNumNumber))
-        # print(self.totalNumNumber)
-        # print(self.correctNumNumber)
+
 
 
 
@@ -236,6 +249,8 @@ class MainForm(QMainWindow):
     def start_game(self):
         from utils.gameMode import MyDialog_GameMode_chosen
         from utils.backtime import BackTime
+
+        self.next_button.setEnabled(False)
 
         dialog_gameType = MyDialog_GameMode_chosen()
         result = dialog_gameType.exec_()
