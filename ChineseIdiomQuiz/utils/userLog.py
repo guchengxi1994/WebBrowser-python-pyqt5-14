@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-26 16:54:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-26 16:58:51
+@LastEditTime: 2020-04-26 16:59:42
 '''
 
 from PyQt5.QtCore import Qt, QTimer
@@ -24,5 +24,5 @@ class UserInfo(object):
 
 
 class UserLogWindow(QDialog):
-    def __init__():
+    def __init__(self):
         super(UserLogWindow,self).__init__()
