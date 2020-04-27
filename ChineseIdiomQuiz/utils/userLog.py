@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-26 16:54:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-27 09:40:29
+@LastEditTime: 2020-04-27 10:09:33
 '''
 
 from PyQt5.QtCore import Qt, QTimer
@@ -22,7 +22,7 @@ userInfoFilePath = parent_Base_dir + os.sep + "static" + os.sep + "userInfo.pkl"
 
 
 class UserInfo(object):
-    def __init__(self,username,password,userlevel,email,isLogged=False,isCurrentUser=True):
+    def __init__(self,username,password,userlevel,email,isLogged=True,isCurrentUser=True):
         self.username = username
         self.password = password
         self.userlevel = userlevel
@@ -51,7 +51,7 @@ def initAdmin(userInfoFilePath):
         userList = []
         userSet = set()
 
-        u = UserInfo("admin",'admin',5,"admin@test.com")
+        u = UserInfo("admin",'admin',5,"admin@test.com",False,False)
         userSet.add(u)
         userList = list(userSet)
 
@@ -66,6 +66,21 @@ def loadUsers(userInfoFilePath):
     pk_file.close()
 
     return g
+
+def userAddU(userInfoFilePath,u:UserInfo):
+    g = loadUsers(userInfoFilePath)
+    for i in g:
+        i.isLogged == False
+        i.isCurrentUser == False
+    setG = set(g)
+    setG.add(u)
+
+    pk_file = open(userInfoFilePath,'wb')
+    pickle.dump(list(setG),pk_file)
+    pk_file.close()
+
+    
+
 
 def iterator2list(itera):
     res = []
@@ -107,6 +122,7 @@ class UserLogWindow(QDialog):
         self.newButton.move(160,150)
 
         self.logButton.clicked.connect(self.logIn)
+        self.newButton.clicked.connect(self.createUser)
 
         self.currentUser = None
 
@@ -123,10 +139,31 @@ class UserLogWindow(QDialog):
             tmp = iterator2list(s)
 
             if len(tmp)>0:               
-                self.currentUser = tmp[0]              
-                print(self.currentUser)
+                self.currentUser = tmp[0] 
+                userAddU(userInfoFilePath,self.currentUser)             
+                # print(self.currentUser)
             else:
                 QMessageBox.warning(self,'警告','用户名或者密码错误',QMessageBox.Yes|QMessageBox.No,QMessageBox.Yes)
+
+    
+    def createUser(self):
+        if self.userNameEdit.text().strip() == "" or self.passwordEdit.text().strip() == "" or self.emailEdit.text().strip()=="":
+            QMessageBox.warning(self,'警告','用户名或者密码或者邮箱为空',QMessageBox.Yes|QMessageBox.No,QMessageBox.Yes)
+        
+        else:
+            g = loadUsers(userInfoFilePath)
+            s = filter(lambda x:x.username == self.userNameEdit.text(),g )
+            tmp = iterator2list(s)
+            if len(tmp)>0:
+                QMessageBox.warning(self,'警告','用户名重复',QMessageBox.Yes|QMessageBox.No,QMessageBox.Yes)
+            else:
+                u = UserInfo(self.userNameEdit.text().strip(),self.passwordEdit.text().strip(),1,self.emailEdit.text().strip())
+                self.currentUser = u
+
+                userAddU(userInfoFilePath,u)
+
+
+        
         
         
 
