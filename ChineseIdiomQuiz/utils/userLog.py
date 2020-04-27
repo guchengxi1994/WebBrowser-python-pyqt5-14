@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-26 16:54:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-27 10:09:33
+@LastEditTime: 2020-04-27 10:15:39
 '''
 
 from PyQt5.QtCore import Qt, QTimer
@@ -92,6 +92,8 @@ class UserLogWindow(QDialog):
     def __init__(self):
         super(UserLogWindow,self).__init__()
 
+        initAdmin(userInfoFilePath)
+
         self.setFixedSize(300,200)
 
         self.userNameLable = QLabel("用户名：",self)
@@ -140,7 +142,8 @@ class UserLogWindow(QDialog):
 
             if len(tmp)>0:               
                 self.currentUser = tmp[0] 
-                userAddU(userInfoFilePath,self.currentUser)             
+                userAddU(userInfoFilePath,self.currentUser) 
+                self.close()           
                 # print(self.currentUser)
             else:
                 QMessageBox.warning(self,'警告','用户名或者密码错误',QMessageBox.Yes|QMessageBox.No,QMessageBox.Yes)
@@ -161,6 +164,7 @@ class UserLogWindow(QDialog):
                 self.currentUser = u
 
                 userAddU(userInfoFilePath,u)
+                self.close()
 
 
         
