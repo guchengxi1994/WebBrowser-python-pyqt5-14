@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-26 16:54:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-27 10:31:44
+@LastEditTime: 2020-04-27 10:54:45
 '''
 
 from PyQt5.QtCore import Qt, QTimer
@@ -179,39 +179,52 @@ class UserLogWindow(QDialog):
 
 
 class UserChangeWindow(QDialog):
-    def __init__(self):
+    def __init__(self,userName="admin"):
         super(UserChangeWindow,self).__init__()
         self.setFixedSize(300,200)
 
         self.userNameLable = QLabel("用户名：",self)
         self.userNameEdit = QLineEdit(self)
+        self.userNameEdit.setEnabled(False)
+        self.userNameEdit.setText(userName)
 
-        self.passwordLable = QLabel("密码：",self)
-        self.passwordEdit = QLineEdit(self)
+        self.statusLable = QLabel("状态:",self)
+        # self.passwordEdit = QLineEdit(self)
 
-        self.emailLable = QLabel("E-mail：",self)
-        self.emailEdit = QLineEdit(self)
-        
         self.logButton = QPushButton(self)
-        self.logButton.setText("登录")
+        self.logButton.setText("切换用户")
 
         self.newButton = QPushButton(self)
-        self.newButton.setText("注册")
+        self.newButton.setText("退出")
 
         self.userNameLable.move(20,20)
         self.userNameEdit.move(100,20)
 
-        self.passwordLable.move(20,60)
-        self.passwordEdit.move(100,60)
-
-        self.emailLable.move(20,100)
-        self.emailEdit.move(100,100)
+        self.statusLable.move(20,60)
+        # self.passwordEdit.move(100,60)
 
         self.logButton.move(60,150)
         self.newButton.move(160,150)
+        self.switch = 0
+
+        self.logButton.clicked.connect(self.switchUser)
+        self.newButton.clicked.connect(self._exit_)
+
+    
+    def initInfo(self):
+        parent_Base_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
+        userInfoFilePath = parent_Base_dir + os.sep + "static" + os.sep + "userInfo.pkl"
 
 
-        self.currentUser = None
+    
+    def switchUser(self):
+        self.switch = 1
+        self.close()
+    
+    def _exit_(self):
+        self.close()
+
+
         
         
 
