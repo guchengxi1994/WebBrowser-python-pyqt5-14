@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-26 17:42:42
+@LastEditTime: 2020-04-27 08:59:10
 '''
 import os
 import sys
@@ -42,6 +42,11 @@ class MainForm(QMainWindow):
         self.main_toolbar.setIconSize(QtCore.QSize(16,16))
         self.addToolBar(self.main_toolbar)
 
+        self.isActive = False  # 控件可用与否的判断
+
+        self.isLogged = False  # 登录与否的判断
+        self.currentUser = None  # 当前用户的判断
+
         self.start_button = QAction(QIcon(BASE_DIR + '/static/test.png'),'Start Quiz',self)
         self.main_toolbar.addAction(self.start_button)
         self.start_button.triggered.connect(self.start_game)
@@ -52,6 +57,10 @@ class MainForm(QMainWindow):
         self.next_button = QAction(QIcon(BASE_DIR + '/static/next.png'),'Next Quiz',self)
         self.main_toolbar.addAction(self.next_button)
         self.next_button.triggered.connect(self.next_quiz)
+
+        self.f5_button = QAction(QIcon(BASE_DIR + '/static/f5.png'),'Refresh',self)
+        self.main_toolbar.addAction(self.f5_button)
+        self.f5_button.triggered.connect(self.f5)
 
         #用户
         self.user_button = QAction(QIcon(BASE_DIR + '/static/user.png'),'User Info',self)
@@ -131,6 +140,7 @@ class MainForm(QMainWindow):
         self.resultEdit = QLineEdit(self)
         self.resultEdit.setText("")
         self.resultEdit.move(150,400)
+        self.resultEdit.returnPressed.connect(self.tijiao)
 
         self.resultButton = QPushButton(self)
         self.resultButton.move(250,400)
@@ -138,6 +148,7 @@ class MainForm(QMainWindow):
         self.resultButton.setStyleSheet("QPushButton{border-image: url(./static/tijiao.png)}")
         self.resultButton.clicked.connect(self.tijiao)
         self.resultButton.setToolTip("Next")
+
 
 
 
@@ -154,6 +165,9 @@ class MainForm(QMainWindow):
 
     
     def tijiao(self):
+
+        self.isActive = True
+        self.next_button.setEnabled(False)
 
         quiz = self.quizEdit.text()
         res = self.resultEdit.text()
@@ -182,12 +196,27 @@ class MainForm(QMainWindow):
         else:
             self.next_quiz()
 
-        # if self.next_button.isEnable() == False: 
         self.totalNum.setText('总数： '+str(self.totalNumNumber))
         self.correctNum.setText('准确数量： '+str(self.correctNumNumber))
 
 
+    def f5(self):
+        """
+        刷新
+        """
+        self.next_quiz()
+        self.isActive = False
+        self.next_button.setEnabled(True)
+        self.totalNumNumber = 0
+        self.correctNumNumber = 0
+        self.totalNum.setText('总数： '+str(self.totalNumNumber))
+        self.correctNum.setText('准确数量： '+str(self.correctNumNumber))
 
+    def freeze(self):
+        """
+        禁用所有控件
+        """
+        pass
 
 
 
@@ -250,6 +279,7 @@ class MainForm(QMainWindow):
         from utils.gameMode import MyDialog_GameMode_chosen
         from utils.backtime import BackTime
 
+        self.isActive = True
         self.next_button.setEnabled(False)
 
         dialog_gameType = MyDialog_GameMode_chosen()
