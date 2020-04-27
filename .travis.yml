@@ -1,11 +1,11 @@
 language: python 
-install: 
-        - pip install Flask
-        - pip install Flask_Cors
-        - pip install requests
-        - pip install seaborn
-        - pip install numpy
-        - pip install matplotlib
+# install: 
+#         - pip install Flask
+#         - pip install Flask_Cors
+#         - pip install requests
+#         - pip install seaborn
+#         - pip install numpy
+#         - pip install matplotlib
 
 script: 
-        python ./LocalWebTest/app.py
+        python test.py
