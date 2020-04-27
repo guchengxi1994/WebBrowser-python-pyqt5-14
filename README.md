@@ -5,11 +5,11 @@
  * @Author: xiaoshuyui
  * @Date: 2020-04-16 15:40:01
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-04-27 14:41:36
+ * @LastEditTime: 2020-04-27 15:00:07
  -->
 # WebBrowser-python-pyqt5-14
 
-[![Build Status](https://travis-ci.org/guchengxi1994/WebBrowser-python-pyqt5-14?branch=master)](https://travis-ci.org/guchengxi1994/WebBrowser-python-pyqt5-14.svg?branch=master)    <======== To be honest, i don't know what it is.
+[![Build Status](https://travis-ci.org/guchengxi1994/WebBrowser-python-pyqt5-14?branch=master)](https://travis-ci.org/guchengxi1994/WebBrowser-python-pyqt5-14.svg?branch=master)    <======== To be honest, i don't know what it is!
 
 ## 2020.4.17 修改说明
 
