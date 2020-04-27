@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-27 08:59:10
+@LastEditTime: 2020-04-27 10:30:13
 '''
 import os
 import sys
@@ -23,6 +23,7 @@ import random
 import datetime
 from pypinyin import lazy_pinyin,pinyin
 from utils.easyMode import iterator2list
+from utils.userLog import UserLogWindow,UserInfo
 
 
 BASE_DIR = os.path.abspath(os.curdir)
@@ -44,7 +45,7 @@ class MainForm(QMainWindow):
 
         self.isActive = False  # 控件可用与否的判断
 
-        self.isLogged = False  # 登录与否的判断
+        # self.isLogged = False  # 登录与否的判断
         self.currentUser = None  # 当前用户的判断
 
         self.start_button = QAction(QIcon(BASE_DIR + '/static/test.png'),'Start Quiz',self)
@@ -70,6 +71,8 @@ class MainForm(QMainWindow):
         spacer.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
         self.main_toolbar.addWidget(spacer)
         self.main_toolbar.addAction(self.user_button)
+
+        self.user_button.triggered.connect(self.logIN)
 
 
 
@@ -162,6 +165,16 @@ class MainForm(QMainWindow):
 
         self.timer = QTimer()
         self.step = 0
+
+    def logIN(self):
+        if self.currentUser is not None:
+            pass
+        else:
+            user = UserLogWindow()
+            result = user.exec_()
+
+            self.currentUser = user.currentUser
+            print(self.currentUser)
 
     
     def tijiao(self):

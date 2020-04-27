@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-26 16:54:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-27 10:15:39
+@LastEditTime: 2020-04-27 10:31:44
 '''
 
 from PyQt5.QtCore import Qt, QTimer
@@ -17,7 +17,8 @@ import pickle
 from pypinyin import pinyin
 
 BASE_DIR = os.path.abspath(os.curdir)
-parent_Base_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
+#parent_Base_dir = os.path.abspath(os.path.join(os.getcwd(), "..")) #for test
+parent_Base_dir = os.path.abspath(os.path.join(os.getcwd(), "."))
 userInfoFilePath = parent_Base_dir + os.sep + "static" + os.sep + "userInfo.pkl"
 
 
@@ -61,6 +62,7 @@ def initAdmin(userInfoFilePath):
         
 
 def loadUsers(userInfoFilePath):
+    print(userInfoFilePath)
     pk_file = open(userInfoFilePath,'rb')
     g = pickle.load(pk_file)
     pk_file.close()
@@ -165,9 +167,51 @@ class UserLogWindow(QDialog):
 
                 userAddU(userInfoFilePath,u)
                 self.close()
+    
+
+    @staticmethod
+    def getCurrentUser(parent=None):
+        dialog = UserLogWindow(parent)
+        result = dialog.exec_()
+        return dialog.currentUser
 
 
+
+
+class UserChangeWindow(QDialog):
+    def __init__(self):
+        super(UserChangeWindow,self).__init__()
+        self.setFixedSize(300,200)
+
+        self.userNameLable = QLabel("用户名：",self)
+        self.userNameEdit = QLineEdit(self)
+
+        self.passwordLable = QLabel("密码：",self)
+        self.passwordEdit = QLineEdit(self)
+
+        self.emailLable = QLabel("E-mail：",self)
+        self.emailEdit = QLineEdit(self)
         
+        self.logButton = QPushButton(self)
+        self.logButton.setText("登录")
+
+        self.newButton = QPushButton(self)
+        self.newButton.setText("注册")
+
+        self.userNameLable.move(20,20)
+        self.userNameEdit.move(100,20)
+
+        self.passwordLable.move(20,60)
+        self.passwordEdit.move(100,60)
+
+        self.emailLable.move(20,100)
+        self.emailEdit.move(100,100)
+
+        self.logButton.move(60,150)
+        self.newButton.move(160,150)
+
+
+        self.currentUser = None
         
         
 
@@ -187,6 +231,6 @@ if __name__ == "__main__":
     #     print(i)
 
     app = QApplication(sys.argv)
-    demo = UserLogWindow()
+    demo = UserChangeWindow()
     demo.show()
     sys.exit(app.exec_())
