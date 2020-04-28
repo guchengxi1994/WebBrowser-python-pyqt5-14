@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-26 15:57:09
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-26 16:46:36
+@LastEditTime: 2020-04-28 10:23:22
 '''
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import QApplication, QWidget, QProgressBar, \
@@ -69,9 +69,17 @@ class AddIdioms(QDialog):
             if self.idioms is not None:
                 self.idioms = list(set(self.idioms).add(iPYm))
             else:
-                pass
+                self.idioms = list(iPYm)
+        
+        self.close()
             # print(pystr)
             # print(meaning)
+    
+    @staticmethod
+    def getData(parent=None):
+        dialog = AddIdioms(parent)
+        result = dialog.exec_()
+        return dialog.idioms
 
 
 if __name__ == '__main__':

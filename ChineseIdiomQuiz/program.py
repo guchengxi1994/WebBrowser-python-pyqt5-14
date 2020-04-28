@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-28 09:52:05
+@LastEditTime: 2020-04-28 10:17:27
 '''
 import os
 import sys
@@ -25,6 +25,7 @@ from pypinyin import lazy_pinyin,pinyin
 from utils.easyMode import iterator2list
 from utils.userLog import UserLogWindow,UserInfo,UserChangeWindow
 import pickle
+from utils.addIdiom import AddIdioms
 
 
 BASE_DIR = os.path.abspath(os.curdir)
@@ -63,6 +64,10 @@ class MainForm(QMainWindow):
         self.f5_button = QAction(QIcon(BASE_DIR + '/static/imgs/f5.png'),'Refresh',self)
         self.main_toolbar.addAction(self.f5_button)
         self.f5_button.triggered.connect(self.f5)
+
+        self.add_button = QAction(QIcon(BASE_DIR + '/static/imgs/add.png'),'Add Quiz',self)
+        self.main_toolbar.addAction(self.add_button)
+        self.add_button.triggered.connect(self.add_quiz)
 
         #用户
         self.user_button = QAction(QIcon(BASE_DIR + '/static/imgs/user.png'),'User Info',self)
@@ -169,6 +174,15 @@ class MainForm(QMainWindow):
 
         self.initUser()
 
+    
+    def add_quiz(self):
+        # pass
+        a = AddIdioms()
+        result = a.exec_()
+        newIdiom = a.idioms
+
+
+
     def initUser(self):
         from utils.userLog import loadUsers
         userFilePath = BASE_DIR+os.sep+"static"+os.sep+"userInfo.pkl"
@@ -179,8 +193,8 @@ class MainForm(QMainWindow):
             self.currentUser = tmp[0]
         else:
             self.currentUser = UserInfo("","",0,"",False,False)
-        
-        
+
+ 
 
     def logIN(self):
         if self.currentUser is not None:
