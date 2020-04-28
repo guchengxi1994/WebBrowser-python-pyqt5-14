@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-26 16:54:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-28 08:59:06
+@LastEditTime: 2020-04-28 09:49:59
 '''
 
 from PyQt5.QtCore import Qt, QTimer,QRect
@@ -239,10 +239,10 @@ class UserChangeWindow(QDialog):
         tmp = iterator2list(s)
 
         if tmp[0].userlevel == 5:
-            pix = QPixmap(parent_Base_dir+os.sep+"static"+os.sep+"top_level.png")
+            pix = QPixmap(parent_Base_dir+os.sep+"static"+os.sep+"imgs"+os.sep+"top_level.png")
             
         else:
-            pix = QPixmap(parent_Base_dir+os.sep+"static"+os.sep+"medal.png")
+            pix = QPixmap(parent_Base_dir+os.sep+"static"+os.sep+"imgs"+os.sep+"medal.png")
         self.ImageView.setPixmap(pix)
 
     

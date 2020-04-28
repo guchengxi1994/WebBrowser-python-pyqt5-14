@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-28 09:12:11
+@LastEditTime: 2020-04-28 09:52:05
 '''
 import os
 import sys
@@ -39,7 +39,7 @@ class MainForm(QMainWindow):
         self.setWindowTitle("Idiom Quiz")
         self.resize(800,600)
         self.setFixedSize(800,600)
-        self.setWindowIcon(QtGui.QIcon(BASE_DIR + '/static/icon.png'))
+        self.setWindowIcon(QtGui.QIcon(BASE_DIR + '/static/imgs/icon.png'))
         self.main_toolbar = QtWidgets.QToolBar()
         self.main_toolbar.setIconSize(QtCore.QSize(16,16))
         self.addToolBar(self.main_toolbar)
@@ -49,23 +49,23 @@ class MainForm(QMainWindow):
         # self.isLogged = False  # 登录与否的判断
         self.currentUser = None  # 当前用户的判断
 
-        self.start_button = QAction(QIcon(BASE_DIR + '/static/test.png'),'Start Quiz',self)
+        self.start_button = QAction(QIcon(BASE_DIR + '/static/imgs/test.png'),'Start Quiz',self)
         self.main_toolbar.addAction(self.start_button)
         self.start_button.triggered.connect(self.start_game)
 
-        self.pause_button = QAction(QIcon(BASE_DIR + '/static/time.png'),'Pause Quiz',self)
+        self.pause_button = QAction(QIcon(BASE_DIR + '/static/imgs/time.png'),'Pause Quiz',self)
         self.main_toolbar.addAction(self.pause_button)
 
-        self.next_button = QAction(QIcon(BASE_DIR + '/static/next.png'),'Next Quiz',self)
+        self.next_button = QAction(QIcon(BASE_DIR + '/static/imgs/next.png'),'Next Quiz',self)
         self.main_toolbar.addAction(self.next_button)
         self.next_button.triggered.connect(self.next_quiz)
 
-        self.f5_button = QAction(QIcon(BASE_DIR + '/static/f5.png'),'Refresh',self)
+        self.f5_button = QAction(QIcon(BASE_DIR + '/static/imgs/f5.png'),'Refresh',self)
         self.main_toolbar.addAction(self.f5_button)
         self.f5_button.triggered.connect(self.f5)
 
         #用户
-        self.user_button = QAction(QIcon(BASE_DIR + '/static/user.png'),'User Info',self)
+        self.user_button = QAction(QIcon(BASE_DIR + '/static/imgs/user.png'),'User Info',self)
         
 
         spacer = QWidget()
@@ -130,7 +130,7 @@ class MainForm(QMainWindow):
         self.quizShowMeaningButton = QPushButton(self)
         self.quizShowMeaningButton.move(238,190)
         self.quizShowMeaningButton.setFixedSize(50,50)
-        self.quizShowMeaningButton.setStyleSheet("QPushButton{border-image: url(./static/meaning.png)}")
+        self.quizShowMeaningButton.setStyleSheet("QPushButton{border-image: url(./static/imgs/meaning.png)}")
         self.quizShowMeaningButton.clicked.connect(self.showMeaning)
         self.quizShowMeaningButton.setToolTip("Show Idiom Meaning")
 
@@ -149,7 +149,7 @@ class MainForm(QMainWindow):
         self.resultButton = QPushButton(self)
         self.resultButton.move(250,400)
         self.resultButton.setFixedSize(31,31)
-        self.resultButton.setStyleSheet("QPushButton{border-image: url(./static/tijiao.png)}")
+        self.resultButton.setStyleSheet("QPushButton{border-image: url(./static/imgs/tijiao.png)}")
         self.resultButton.clicked.connect(self.tijiao)
         self.resultButton.setToolTip("Next")
 
@@ -189,6 +189,11 @@ class MainForm(QMainWindow):
             result = user.exec_()
             switch = user.switch
             print(switch)
+            if switch == 1:
+                user2 = UserLogWindow()
+                result2 = user2.exec_()
+                self.currentUser = user2.currentUser
+                print(self.currentUser)
         else:
             user = UserLogWindow()
             result = user.exec_()
