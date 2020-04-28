@@ -5,19 +5,21 @@
 @Author: xiaoshuyui
 @Date: 2020-04-26 16:54:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-27 10:54:45
+@LastEditTime: 2020-04-28 08:59:06
 '''
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer,QRect
 from PyQt5.QtWidgets import QApplication, QWidget, QProgressBar, \
     QPushButton, QHBoxLayout, QVBoxLayout,QDialog,QLabel,QLineEdit,QTextEdit, \
     QMessageBox
 import sys,os
 import pickle
 from pypinyin import pinyin
+from PyQt5.QtGui import QImage,QPixmap
+# import cv2
 
 BASE_DIR = os.path.abspath(os.curdir)
-#parent_Base_dir = os.path.abspath(os.path.join(os.getcwd(), "..")) #for test
+# parent_Base_dir = os.path.abspath(os.path.join(os.getcwd(), "..")) #for test
 parent_Base_dir = os.path.abspath(os.path.join(os.getcwd(), "."))
 userInfoFilePath = parent_Base_dir + os.sep + "static" + os.sep + "userInfo.pkl"
 
@@ -62,7 +64,7 @@ def initAdmin(userInfoFilePath):
         
 
 def loadUsers(userInfoFilePath):
-    print(userInfoFilePath)
+    # print(userInfoFilePath)
     pk_file = open(userInfoFilePath,'rb')
     g = pickle.load(pk_file)
     pk_file.close()
@@ -182,6 +184,7 @@ class UserChangeWindow(QDialog):
     def __init__(self,userName="admin"):
         super(UserChangeWindow,self).__init__()
         self.setFixedSize(300,200)
+        self.thisUser = userName
 
         self.userNameLable = QLabel("用户名：",self)
         self.userNameEdit = QLineEdit(self)
@@ -210,11 +213,37 @@ class UserChangeWindow(QDialog):
         self.logButton.clicked.connect(self.switchUser)
         self.newButton.clicked.connect(self._exit_)
 
+
+        # pix = QPixmap(parent_Base_dir+os.sep+"static"+os.sep+"medal.png")
+        self.ImageView = QLabel(self)
+        self.ImageView.setGeometry(QRect(20, 20, 20, 20))
+        self.ImageView.setText("")
+        self.ImageView.setObjectName("ImageView")
+        self.ImageView.setScaledContents(True)
+        # self.ImageView.setPixmap(pix)
+
+        self.ImageView.move(100,60)
+        self.ImageView.setToolTip("User Info")
+        self.initInfo()
+
+
+
+        
+
     
     def initInfo(self):
-        parent_Base_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
+        # parent_Base_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
         userInfoFilePath = parent_Base_dir + os.sep + "static" + os.sep + "userInfo.pkl"
+        g = loadUsers(userInfoFilePath)
+        s = filter(lambda x:x.username == self.thisUser,g )
+        tmp = iterator2list(s)
 
+        if tmp[0].userlevel == 5:
+            pix = QPixmap(parent_Base_dir+os.sep+"static"+os.sep+"top_level.png")
+            
+        else:
+            pix = QPixmap(parent_Base_dir+os.sep+"static"+os.sep+"medal.png")
+        self.ImageView.setPixmap(pix)
 
     
     def switchUser(self):
@@ -223,6 +252,12 @@ class UserChangeWindow(QDialog):
     
     def _exit_(self):
         self.close()
+
+    @staticmethod
+    def getCurrentUser(parent=None):
+        dialog = UserChangeWindow(parent)
+        result = dialog.exec_()
+        return dialog.switch
 
 
         

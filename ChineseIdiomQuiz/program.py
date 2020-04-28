@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 11:15:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-04-27 10:30:13
+@LastEditTime: 2020-04-28 09:12:11
 '''
 import os
 import sys
@@ -23,7 +23,8 @@ import random
 import datetime
 from pypinyin import lazy_pinyin,pinyin
 from utils.easyMode import iterator2list
-from utils.userLog import UserLogWindow,UserInfo
+from utils.userLog import UserLogWindow,UserInfo,UserChangeWindow
+import pickle
 
 
 BASE_DIR = os.path.abspath(os.curdir)
@@ -166,9 +167,28 @@ class MainForm(QMainWindow):
         self.timer = QTimer()
         self.step = 0
 
+        self.initUser()
+
+    def initUser(self):
+        from utils.userLog import loadUsers
+        userFilePath = BASE_DIR+os.sep+"static"+os.sep+"userInfo.pkl"
+        g = loadUsers(userFilePath)
+        s = filter(lambda x:x.isCurrentUser == True,g )
+        tmp = iterator2list(s)
+        if len(tmp)>0:
+            self.currentUser = tmp[0]
+        else:
+            self.currentUser = UserInfo("","",0,"",False,False)
+        
+        
+
     def logIN(self):
         if self.currentUser is not None:
-            pass
+            # pass
+            user = UserChangeWindow(self.currentUser.username)
+            result = user.exec_()
+            switch = user.switch
+            print(switch)
         else:
             user = UserLogWindow()
             result = user.exec_()
