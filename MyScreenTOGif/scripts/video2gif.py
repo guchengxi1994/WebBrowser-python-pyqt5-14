@@ -5,13 +5,23 @@
 @Author: xiaoshuyui
 @Date: 2020-05-08 10:21:41
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-05-08 10:26:17
+@LastEditTime: 2020-05-08 11:31:42
 '''
 import cv2
 import os
 import imageio
+from PIL import Image
 
-def extract_image_from_video(video_path_name=None, img_dir='img/', cap_fps=10):
+
+def compressImg(imgName):
+    im = Image.open(imgName)
+    im.convert('RGB')
+    
+    im.thumbnail((int(im.shape[0]*0.25),int(im.shape[1]*0.25)))
+    return im
+
+
+def extract_image_from_video(video_path_name=None, img_dir='img/', cap_fps=1):
     '''
     从视频中提取图片
     :param video_path_name: 视频文件全路径
@@ -28,8 +38,9 @@ def extract_image_from_video(video_path_name=None, img_dir='img/', cap_fps=10):
  
     cap = cv2.VideoCapture(video_path_name)  # 打开视频文件
     # 视频文件的一些信息（name，fps，size）
-    video_name = ''.join(video_path_name.split('/')[-1].split('.')[:-1])
+    video_name = ''.join(video_path_name.split(os.sep)[-1].split('.')[:-1])
     fps = cap.get(cv2.CAP_PROP_FPS)
+    print(fps)
     size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
     print('Video info : ', {'name': video_name, 'fps': fps, 'size': size})
  
@@ -42,6 +53,8 @@ def extract_image_from_video(video_path_name=None, img_dir='img/', cap_fps=10):
             # cv2.imshow('frame', frame)
             if frame_nb % temp == 0:
                 # 保存视频当前帧， 文件名应按字符大小升序保存
+                print(img_dir + video_name + '%3d.png' % frame_nb)
+                
                 cv2.imwrite(img_dir + video_name + '%3d.png' % frame_nb, frame)
         else:
             break
